@@ -1,0 +1,502 @@
+[
+{
+"i": 0,
+"c": "de",
+"n": "Germany"
+},
+{
+"i": 1,
+"c": "fr",
+"n": "France"
+},
+{
+"i": 2,
+"c": "it",
+"n": "Italy"
+},
+{
+"i": 3,
+"c": "es",
+"n": "Spain"
+},
+{
+"i": 4,
+"c": "pt",
+"n": "Portugal"
+},
+{
+"i": 5,
+"c": "gb",
+"n": "United Kingdom"
+},
+{
+"i": 6,
+"c": "ie",
+"n": "Ireland"
+},
+{
+"i": 7,
+"c": "nl",
+"n": "Netherlands"
+},
+{
+"i": 8,
+"c": "be",
+"n": "Belgium"
+},
+{
+"i": 9,
+"c": "lu",
+"n": "Luxembourg"
+},
+{
+"i": 10,
+"c": "ch",
+"n": "Switzerland"
+},
+{
+"i": 11,
+"c": "at",
+"n": "Austria"
+},
+{
+"i": 12,
+"c": "dk",
+"n": "Denmark"
+},
+{
+"i": 13,
+"c": "no",
+"n": "Norway"
+},
+{
+"i": 14,
+"c": "se",
+"n": "Sweden"
+},
+{
+"i": 15,
+"c": "fi",
+"n": "Finland"
+},
+{
+"i": 16,
+"c": "is",
+"n": "Iceland"
+},
+{
+"i": 17,
+"c": "pl",
+"n": "Poland"
+},
+{
+"i": 18,
+"c": "cz",
+"n": "Czechia"
+},
+{
+"i": 19,
+"c": "sk",
+"n": "Slovakia"
+},
+{
+"i": 20,
+"c": "hu",
+"n": "Hungary"
+},
+{
+"i": 21,
+"c": "si",
+"n": "Slovenia"
+},
+{
+"i": 22,
+"c": "hr",
+"n": "Croatia"
+},
+{
+"i": 23,
+"c": "ba",
+"n": "Bosnia"
+},
+{
+"i": 24,
+"c": "rs",
+"n": "Serbia"
+},
+{
+"i": 25,
+"c": "me",
+"n": "Montenegro"
+},
+{
+"i": 26,
+"c": "al",
+"n": "Albania"
+},
+{
+"i": 27,
+"c": "mk",
+"n": "North Macedonia"
+},
+{
+"i": 28,
+"c": "gr",
+"n": "Greece"
+},
+{
+"i": 29,
+"c": "bg",
+"n": "Bulgaria"
+},
+{
+"i": 30,
+"c": "ro",
+"n": "Romania"
+},
+{
+"i": 31,
+"c": "md",
+"n": "Moldova"
+},
+{
+"i": 32,
+"c": "ua",
+"n": "Ukraine"
+},
+{
+"i": 33,
+"c": "lt",
+"n": "Lithuania"
+},
+{
+"i": 34,
+"c": "lv",
+"n": "Latvia"
+},
+{
+"i": 35,
+"c": "ee",
+"n": "Estonia"
+},
+{
+"i": 36,
+"c": "tr",
+"n": "Turkey"
+},
+{
+"i": 37,
+"c": "cy",
+"n": "Cyprus"
+},
+{
+"i": 38,
+"c": "mt",
+"n": "Malta"
+},
+{
+"i": 39,
+"c": "ge",
+"n": "Georgia"
+},
+{
+"i": 40,
+"c": "am",
+"n": "Armenia"
+},
+{
+"i": 41,
+"c": "az",
+"n": "Azerbaijan"
+},
+{
+"i": 42,
+"c": "kz",
+"n": "Kazakhstan"
+},
+{
+"i": 43,
+"c": "uz",
+"n": "Uzbekistan"
+},
+{
+"i": 44,
+"c": "us",
+"n": "USA"
+},
+{
+"i": 45,
+"c": "ca",
+"n": "Canada"
+},
+{
+"i": 46,
+"c": "mx",
+"n": "Mexico"
+},
+{
+"i": 47,
+"c": "cu",
+"n": "Cuba"
+},
+{
+"i": 48,
+"c": "jm",
+"n": "Jamaica"
+},
+{
+"i": 49,
+"c": "pa",
+"n": "Panama"
+},
+{
+"i": 50,
+"c": "cr",
+"n": "Costa Rica"
+},
+{
+"i": 51,
+"c": "gt",
+"n": "Guatemala"
+},
+{
+"i": 52,
+"c": "hn",
+"n": "Honduras"
+},
+{
+"i": 53,
+"c": "co",
+"n": "Colombia"
+},
+{
+"i": 54,
+"c": "ve",
+"n": "Venezuela"
+},
+{
+"i": 55,
+"c": "ec",
+"n": "Ecuador"
+},
+{
+"i": 56,
+"c": "pe",
+"n": "Peru"
+},
+{
+"i": 57,
+"c": "bo",
+"n": "Bolivia"
+},
+{
+"i": 58,
+"c": "cl",
+"n": "Chile"
+},
+{
+"i": 59,
+"c": "ar",
+"n": "Argentina"
+},
+{
+"i": 60,
+"c": "uy",
+"n": "Uruguay"
+},
+{
+"i": 61,
+"c": "py",
+"n": "Paraguay"
+},
+{
+"i": 62,
+"c": "br",
+"n": "Brazil"
+},
+{
+"i": 63,
+"c": "ma",
+"n": "Morocco"
+},
+{
+"i": 64,
+"c": "dz",
+"n": "Algeria"
+},
+{
+"i": 65,
+"c": "tn",
+"n": "Tunisia"
+},
+{
+"i": 66,
+"c": "eg",
+"n": "Egypt"
+},
+{
+"i": 67,
+"c": "ng",
+"n": "Nigeria"
+},
+{
+"i": 68,
+"c": "gh",
+"n": "Ghana"
+},
+{
+"i": 69,
+"c": "ci",
+"n": "Ivory Coast"
+},
+{
+"i": 70,
+"c": "sn",
+"n": "Senegal"
+},
+{
+"i": 71,
+"c": "cm",
+"n": "Cameroon"
+},
+{
+"i": 72,
+"c": "et",
+"n": "Ethiopia"
+},
+{
+"i": 73,
+"c": "ke",
+"n": "Kenya"
+},
+{
+"i": 74,
+"c": "tz",
+"n": "Tanzania"
+},
+{
+"i": 75,
+"c": "za",
+"n": "South Africa"
+},
+{
+"i": 76,
+"c": "sa",
+"n": "Saudi Arabia"
+},
+{
+"i": 77,
+"c": "ae",
+"n": "UAE"
+},
+{
+"i": 78,
+"c": "qa",
+"n": "Qatar"
+},
+{
+"i": 79,
+"c": "il",
+"n": "Israel"
+},
+{
+"i": 80,
+"c": "lb",
+"n": "Lebanon"
+},
+{
+"i": 81,
+"c": "jo",
+"n": "Jordan"
+},
+{
+"i": 82,
+"c": "pk",
+"n": "Pakistan"
+},
+{
+"i": 83,
+"c": "in",
+"n": "India"
+},
+{
+"i": 84,
+"c": "bd",
+"n": "Bangladesh"
+},
+{
+"i": 85,
+"c": "np",
+"n": "Nepal"
+},
+{
+"i": 86,
+"c": "lk",
+"n": "Sri Lanka"
+},
+{
+"i": 87,
+"c": "cn",
+"n": "China"
+},
+{
+"i": 88,
+"c": "jp",
+"n": "Japan"
+},
+{
+"i": 89,
+"c": "kr",
+"n": "South Korea"
+},
+{
+"i": 90,
+"c": "mn",
+"n": "Mongolia"
+},
+{
+"i": 91,
+"c": "th",
+"n": "Thailand"
+},
+{
+"i": 92,
+"c": "vn",
+"n": "Vietnam"
+},
+{
+"i": 93,
+"c": "ph",
+"n": "Philippines"
+},
+{
+"i": 94,
+"c": "id",
+"n": "Indonesia"
+},
+{
+"i": 95,
+"c": "my",
+"n": "Malaysia"
+},
+{
+"i": 96,
+"c": "sg",
+"n": "Singapore"
+},
+{
+"i": 97,
+"c": "au",
+"n": "Australia"
+},
+{
+"i": 98,
+"c": "nz",
+"n": "New Zealand"
+},
+{
+"i": 99,
+"c": "ir",
+"n": "Iran"
+}
+]

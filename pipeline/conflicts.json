@@ -1,0 +1,41 @@
+{
+ "_info": "Paare, die NICHT gegeneinander antreten (direkte zwischenstaatliche Kriege/Gefechte 2025-2026). Vor jedem Lauf per Websuche aktualisieren.",
+ "updated": "2026-10-05",
+ "pairs": [
+  [
+   "il",
+   "ir",
+   "Israel-Iran-Krieg 2025/2026"
+  ],
+  [
+   "us",
+   "ir",
+   "US-Angriffe auf Iran 2025/2026"
+  ],
+  [
+   "il",
+   "lb",
+   "Libanon-Krieg 2026"
+  ],
+  [
+   "ir",
+   "qa",
+   "iranischer Angriff auf Al Udeid 2025"
+  ],
+  [
+   "in",
+   "pk",
+   "Militärkonflikt Mai 2025"
+  ],
+  [
+   "us",
+   "ve",
+   "US-Angriffe auf Venezuela 2026"
+  ],
+  [
+   "am",
+   "az",
+   "Krieg um Bergkarabach, Friedensprozess 2025"
+  ]
+ ]
+}
