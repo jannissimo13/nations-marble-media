@@ -1,1 +1,184 @@
-{"posts": []}
+{
+ "posts": [
+  {
+   "seed": 2421,
+   "codes": [
+    "tr",
+    "us"
+   ],
+   "names": [
+    "Turkey",
+    "USA"
+   ],
+   "file": "flagduel-2421-turkey-vs-usa.mp4",
+   "postId": "6ac4f30bfa904800207bff8c",
+   "dueAt": "2026-10-06T19:00:00Z",
+   "status": "scheduled",
+   "requested": false,
+   "winner": "Turkey",
+   "music": "After Sunset - Alex Jones _ Xander Jones.mp3"
+  },
+  {
+   "seed": 289776006,
+   "codes": [
+    "lv",
+    "jp"
+   ],
+   "names": [
+    "Latvia",
+    "Japan"
+   ],
+   "file": "flagduel-289776006-latvia-vs-japan.mp4",
+   "postId": "6ac4f312ce303249ded61fb1",
+   "dueAt": "2026-10-07T11:00:00Z",
+   "status": "scheduled",
+   "requested": false,
+   "winner": "Latvia",
+   "music": "I Had a Feeling - TrackTribe.mp3"
+  },
+  {
+   "seed": 289776015,
+   "codes": [
+    "at",
+    "sg"
+   ],
+   "names": [
+    "Austria",
+    "Singapore"
+   ],
+   "file": "flagduel-289776015-austria-vs-singapore.mp4",
+   "postId": "6ac4f31bce303249ded6205f",
+   "dueAt": "2026-10-07T19:00:00Z",
+   "status": "scheduled",
+   "requested": false,
+   "winner": "Singapore",
+   "music": "After Sunset - Alex Jones _ Xander Jones.mp3"
+  },
+  {
+   "seed": 289776051,
+   "codes": [
+    "al",
+    "gr"
+   ],
+   "names": [
+    "Albania",
+    "Greece"
+   ],
+   "file": "flagduel-289776051-albania-vs-greece.mp4",
+   "postId": "6ac4f31ece303249ded62111",
+   "dueAt": "2026-10-08T11:00:00Z",
+   "status": "scheduled",
+   "requested": false,
+   "winner": "Greece",
+   "music": "Intergalactic - Alex Jones _ Xander Jones.mp3"
+  },
+  {
+   "seed": 289776128,
+   "codes": [
+    "de",
+    "co"
+   ],
+   "names": [
+    "Germany",
+    "Colombia"
+   ],
+   "file": "flagduel-289776128-germany-vs-colombia.mp4",
+   "postId": "6ac4f322dd742d137c562a4a",
+   "dueAt": "2026-10-08T19:00:00Z",
+   "status": "scheduled",
+   "requested": false,
+   "winner": "Colombia",
+   "music": "I Had a Feeling - TrackTribe.mp3"
+  },
+  {
+   "seed": 289776167,
+   "codes": [
+    "br",
+    "in"
+   ],
+   "names": [
+    "Brazil",
+    "India"
+   ],
+   "file": "flagduel-289776167-brazil-vs-india.mp4",
+   "postId": "6ac4f3250ed35e7b6c6c9992",
+   "dueAt": "2026-10-09T11:00:00Z",
+   "status": "scheduled",
+   "requested": false,
+   "winner": "Brazil",
+   "music": "On The Eve - The Grey Room _ Density & Time.mp3"
+  },
+  {
+   "seed": 289776480,
+   "codes": [
+    "ng",
+    "lt"
+   ],
+   "names": [
+    "Nigeria",
+    "Lithuania"
+   ],
+   "file": "flagduel-289776480-nigeria-vs-lithuania.mp4",
+   "postId": "6ac4f32edd742d137c562c7c",
+   "dueAt": "2026-10-09T19:00:00Z",
+   "status": "scheduled",
+   "requested": false,
+   "winner": "Nigeria",
+   "music": "My Synth Bae - The Soundlings.mp3"
+  },
+  {
+   "seed": 289777146,
+   "codes": [
+    "dk",
+    "lb"
+   ],
+   "names": [
+    "Denmark",
+    "Lebanon"
+   ],
+   "file": "flagduel-289777146-denmark-vs-lebanon.mp4",
+   "postId": "6ac4f331ce303249ded62a62",
+   "dueAt": "2026-10-10T11:00:00Z",
+   "status": "scheduled",
+   "requested": false,
+   "winner": "Denmark",
+   "music": "Glitcher - Dyalla.mp3"
+  },
+  {
+   "seed": 289777269,
+   "codes": [
+    "bo",
+    "ma"
+   ],
+   "names": [
+    "Bolivia",
+    "Morocco"
+   ],
+   "file": "flagduel-289777269-bolivia-vs-morocco.mp4",
+   "postId": "6ac4f335dd742d137c562d73",
+   "dueAt": "2026-10-10T19:00:00Z",
+   "status": "scheduled",
+   "requested": false,
+   "winner": "Bolivia",
+   "music": "After Sunset - Alex Jones _ Xander Jones.mp3"
+  },
+  {
+   "seed": 289777395,
+   "codes": [
+    "it",
+    "pk"
+   ],
+   "names": [
+    "Italy",
+    "Pakistan"
+   ],
+   "file": "flagduel-289777395-italy-vs-pakistan.mp4",
+   "postId": "6ac4f339dd742d137c562e5c",
+   "dueAt": "2026-10-11T11:00:00Z",
+   "status": "scheduled",
+   "requested": false,
+   "winner": "Pakistan",
+   "music": "Intergalactic - Alex Jones _ Xander Jones.mp3"
+  }
+ ]
+}
