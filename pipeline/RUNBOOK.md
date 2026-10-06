@@ -1,7 +1,7 @@
 # Runbook: Shorts-Warteschlange auffüllen (Flag Duel)
 
 Dieser Ablauf füllt die Buffer-Warteschlange des YouTube-Kanals **Nations Marble** wieder auf 10 eingeplante Shorts auf.
-Er läuft per geplanter Aufgabe am **Sonntag und Donnerstag um 08:00 (Europe/Berlin)**, kann aber auch von Hand gestartet werden.
+Er läuft per geplanter Aufgabe am **Sonntag und Donnerstag um 19:59 (Europe/Berlin)**, kann aber auch von Hand gestartet werden.
 
 ## Feste Werte
 - Buffer-Organisation: `6ac3b892426816248f156928` ("My organization")
