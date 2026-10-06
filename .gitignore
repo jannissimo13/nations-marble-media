@@ -1,0 +1,5 @@
+# Musik nie committen (Lizenz Audio-Mediathek)
+*.mp3
+*.wav
+shorts/manifest.json
+node_modules/

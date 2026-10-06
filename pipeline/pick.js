@@ -30,7 +30,7 @@ function simulate(seed, ids) {
   return { dur: +(d.endT - d.cfg.intro).toFixed(1), left: d.m[d.winner].lives, changes, ids: d.ids };
 }
 const good = r => r && r.dur >= 52 && r.dur <= 60 && r.left === 1;
-const out = [], taken = new Set();
+const out = [], taken = new Set(), usedCountries = new Set();
 let seed = (Date.now() % 1e9) | 0;
 
 // 1) Wunsch-Duelle aus den Kommentaren
@@ -46,7 +46,7 @@ for (const [a, b] of (args.requests || [])) {
     if (good(r) && (!best || r.changes > best.changes)) best = { seed, ...r };
     if (best && best.changes >= 2) break;
   }
-  if (best) { out.push({ ...best, requested: true }); taken.add(key(a, b)); }
+  if (best) { out.push({ ...best, requested: true }); taken.add(key(a, b)); usedCountries.add(a); usedCountries.add(b); }
 }
 // 2) Zufallsduelle
 let tries = 0;
@@ -57,10 +57,11 @@ while (out.length < count && tries < 200000) {
   if (!good(r) || r.changes < 1) continue;
   const codes = r.ids.map(i => C[i].c), k = key(...codes);
   if (blocked.has(k) || recent.has(k) || taken.has(k)) continue;
+  if (codes.some(c => usedCountries.has(c))) continue;      // jedes Land max. 1x pro Stapel
   const bigCount = codes.filter(c => BIG.has(c)).length;
   if (bigCount === 0) continue;                       // mindestens ein bekanntes Land
   if (bigCount === 1 && (seed % 3) !== 0) continue;   // meistens zwei bekannte
-  out.push({ seed, ...r, requested: false }); taken.add(k);
+  out.push({ seed, ...r, requested: false }); taken.add(k); codes.forEach(c => usedCountries.add(c));
 }
 for (const o of out) { o.codes = o.ids.map(i => C[i].c); o.names = o.ids.map(i => C[i].n); }
 console.log(JSON.stringify(out));
