@@ -16,6 +16,13 @@ order = tracks[:]; random.Random(sum(p['seed'] for p in picks)).shuffle(order)  
 
 def slug(s): return ''.join(ch.lower() if ch.isalnum() else '-' for ch in s).strip('-').replace('--', '-')
 
+def make_title(a, b):
+    # YouTube zeigt die ersten 3 Hashtags über dem Titel; Titel max. 100 Zeichen
+    for tail in (' – Who wins? #shorts #flags #countries', ' – Who wins? #shorts #flags', ' #shorts #flags', ' #shorts'):
+        t = f"{a} vs {b}{tail}"
+        if len(t) <= 100: return t
+    return f"{a} vs {b}"[:100]
+
 def job(p):
     a, b = p['names']
     fname = f"flagduel-{p['seed']}-{slug(a)}-vs-{slug(b)}.mp4"
@@ -27,9 +34,10 @@ def job(p):
     res = json.loads(r.stdout.strip().splitlines()[-1])
     req = ' Requested in the comments!' if p.get('requested') else ''
     return {**p, 'file': fname, 'music': os.path.basename(music) if tracks else None, 'seconds': res['seconds'], 'winner': res['winner'],
-            'title': f"{a} vs {b} – Who wins this duel? #shorts",
+            'title': make_title(a, b),
             'text': (f"{a} vs {b} in the arena!{req} Spikes hit, shields block – last country standing wins. "
-                     f"Which duel should be next? Comment: COUNTRY vs COUNTRY\n\n#shorts #flags #countries #marblerace #simulation")}
+                     f"Which duel should be next? Comment: COUNTRY vs COUNTRY\n\n"
+                     f"#shorts #flags #countries #geography #worldflags #battle #simulation #satisfying #nationsmarble")}
 
 with ThreadPoolExecutor(par) as ex:
     results = list(ex.map(job, picks))
