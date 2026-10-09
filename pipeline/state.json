@@ -13,7 +13,7 @@
    "file": "flagduel-2421-turkey-vs-usa.mp4",
    "postId": "6ac4f30bfa904800207bff8c",
    "dueAt": "2026-10-06T19:00:00Z",
-   "status": "scheduled",
+   "status": "sent",
    "requested": false,
    "winner": "Turkey",
    "music": "After Sunset - Alex Jones _ Xander Jones.mp3"
@@ -31,7 +31,7 @@
    "file": "flagduel-289776006-latvia-vs-japan.mp4",
    "postId": "6ac4f312ce303249ded61fb1",
    "dueAt": "2026-10-07T11:00:00Z",
-   "status": "scheduled",
+   "status": "sent",
    "requested": false,
    "winner": "Latvia",
    "music": "I Had a Feeling - TrackTribe.mp3"
@@ -49,7 +49,7 @@
    "file": "flagduel-289776015-austria-vs-singapore.mp4",
    "postId": "6ac4f31bce303249ded6205f",
    "dueAt": "2026-10-07T19:00:00Z",
-   "status": "scheduled",
+   "status": "sent",
    "requested": false,
    "winner": "Singapore",
    "music": "After Sunset - Alex Jones _ Xander Jones.mp3"
@@ -67,7 +67,7 @@
    "file": "flagduel-289776051-albania-vs-greece.mp4",
    "postId": "6ac4f31ece303249ded62111",
    "dueAt": "2026-10-08T11:00:00Z",
-   "status": "scheduled",
+   "status": "sent",
    "requested": false,
    "winner": "Greece",
    "music": "Intergalactic - Alex Jones _ Xander Jones.mp3"
@@ -85,7 +85,7 @@
    "file": "flagduel-289776128-germany-vs-colombia.mp4",
    "postId": "6ac4f322dd742d137c562a4a",
    "dueAt": "2026-10-08T19:00:00Z",
-   "status": "scheduled",
+   "status": "sent",
    "requested": false,
    "winner": "Colombia",
    "music": "I Had a Feeling - TrackTribe.mp3"
@@ -103,7 +103,7 @@
    "file": "flagduel-289776167-brazil-vs-india.mp4",
    "postId": "6ac4f3250ed35e7b6c6c9992",
    "dueAt": "2026-10-09T11:00:00Z",
-   "status": "scheduled",
+   "status": "sent",
    "requested": false,
    "winner": "Brazil",
    "music": "On The Eve - The Grey Room _ Density & Time.mp3"
@@ -179,6 +179,102 @@
    "requested": false,
    "winner": "Pakistan",
    "music": "Intergalactic - Alex Jones _ Xander Jones.mp3"
+  },
+  {
+   "seed": 557256303,
+   "codes": [
+    "no",
+    "ee"
+   ],
+   "names": [
+    "Norway",
+    "Estonia"
+   ],
+   "file": "flagduel-557256303-norway-vs-estonia.mp4",
+   "status": "pending",
+   "requested": false,
+   "winner": "Estonia",
+   "music": null
+  },
+  {
+   "seed": 557256363,
+   "codes": [
+    "jp",
+    "fi"
+   ],
+   "names": [
+    "Japan",
+    "Finland"
+   ],
+   "file": "flagduel-557256363-japan-vs-finland.mp4",
+   "status": "pending",
+   "requested": false,
+   "winner": "Japan",
+   "music": null
+  },
+  {
+   "seed": 557256377,
+   "codes": [
+    "gr",
+    "dk"
+   ],
+   "names": [
+    "Greece",
+    "Denmark"
+   ],
+   "file": "flagduel-557256377-greece-vs-denmark.mp4",
+   "status": "pending",
+   "requested": false,
+   "winner": "Greece",
+   "music": null
+  },
+  {
+   "seed": 557256426,
+   "codes": [
+    "pe",
+    "kr"
+   ],
+   "names": [
+    "Peru",
+    "South Korea"
+   ],
+   "file": "flagduel-557256426-peru-vs-south-korea.mp4",
+   "status": "pending",
+   "requested": false,
+   "winner": "Peru",
+   "music": null
+  },
+  {
+   "seed": 557256431,
+   "codes": [
+    "nl",
+    "ma"
+   ],
+   "names": [
+    "Netherlands",
+    "Morocco"
+   ],
+   "file": "flagduel-557256431-netherlands-vs-morocco.mp4",
+   "status": "pending",
+   "requested": false,
+   "winner": "Morocco",
+   "music": null
+  },
+  {
+   "seed": 557256462,
+   "codes": [
+    "md",
+    "ie"
+   ],
+   "names": [
+    "Moldova",
+    "Ireland"
+   ],
+   "file": "flagduel-557256462-moldova-vs-ireland.mp4",
+   "status": "pending",
+   "requested": false,
+   "winner": "Ireland",
+   "music": null
   }
  ]
 }
