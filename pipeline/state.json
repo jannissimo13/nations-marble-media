@@ -191,10 +191,12 @@
     "Estonia"
    ],
    "file": "flagduel-557256303-norway-vs-estonia.mp4",
-   "status": "pending",
+   "status": "scheduled",
    "requested": false,
    "winner": "Estonia",
-   "music": null
+   "music": null,
+   "postId": "6ac904f6cb5a8140da1de28c",
+   "dueAt": "2026-10-11T19:00:00Z"
   },
   {
    "seed": 557256363,
@@ -207,10 +209,12 @@
     "Finland"
    ],
    "file": "flagduel-557256363-japan-vs-finland.mp4",
-   "status": "pending",
+   "status": "scheduled",
    "requested": false,
    "winner": "Japan",
-   "music": null
+   "music": null,
+   "postId": "6ac904fd810582311ae634a7",
+   "dueAt": "2026-10-12T11:00:00Z"
   },
   {
    "seed": 557256377,
@@ -223,10 +227,12 @@
     "Denmark"
    ],
    "file": "flagduel-557256377-greece-vs-denmark.mp4",
-   "status": "pending",
+   "status": "scheduled",
    "requested": false,
    "winner": "Greece",
-   "music": null
+   "music": null,
+   "postId": "6ac90504443de8965981eafe",
+   "dueAt": "2026-10-12T19:00:00Z"
   },
   {
    "seed": 557256426,
@@ -239,10 +245,12 @@
     "South Korea"
    ],
    "file": "flagduel-557256426-peru-vs-south-korea.mp4",
-   "status": "pending",
+   "status": "scheduled",
    "requested": false,
    "winner": "Peru",
-   "music": null
+   "music": null,
+   "postId": "6ac9050a443de8965981ee3f",
+   "dueAt": "2026-10-13T11:00:00Z"
   },
   {
    "seed": 557256431,
@@ -255,10 +263,12 @@
     "Morocco"
    ],
    "file": "flagduel-557256431-netherlands-vs-morocco.mp4",
-   "status": "pending",
+   "status": "scheduled",
    "requested": false,
    "winner": "Morocco",
-   "music": null
+   "music": null,
+   "postId": "6ac90511810582311ae63b42",
+   "dueAt": "2026-10-13T19:00:00Z"
   },
   {
    "seed": 557256462,
@@ -271,10 +281,12 @@
     "Ireland"
    ],
    "file": "flagduel-557256462-moldova-vs-ireland.mp4",
-   "status": "pending",
+   "status": "scheduled",
    "requested": false,
    "winner": "Ireland",
-   "music": null
+   "music": null,
+   "postId": "6ac90517810582311ae63cd2",
+   "dueAt": "2026-10-14T11:00:00Z"
   }
  ]
 }
