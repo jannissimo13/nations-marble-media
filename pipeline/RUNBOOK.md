@@ -33,6 +33,7 @@ Er läuft per geplanter Aufgabe am **Sonntag und Donnerstag um 19:59 (Europe/Ber
    **Eigener Frage-Kommentar (Algorithmus):** Buffer kann für YouTube keinen Kommentar setzen (kein `firstComment`). Deshalb im selben Studio-Besuch:
    Für jedes seit dem letzten Lauf veröffentlichte Short (`sent` in Buffer), unter dem der Kanal noch keinen eigenen Kommentar hat,
    den Kommentar „Which countries should fight next? Comment: COUNTRY vs COUNTRY 👇“ als Kanal schreiben und anpinnen (max. 5 pro Lauf).
+   Hinweis: Anpinnen verlangt eine einmalige Identitätsprüfung des Kanals durch den Nutzer (YouTube-Dialog, 09.10.2026). Solange die nicht erledigt ist, nur kommentieren und das im Bericht erwähnen; den Dialog nie selbst durchlaufen.
    Nur wenn der PC erreichbar ist **und** in Schritt 0 die Freigabe erteilt wurde; sonst überspringen und im Bericht erwähnen (das Lesen der Wünsche bleibt davon unberührt). Erledigte Video-IDs in `state.json` unter `commented` merken.
 5. **Konflikt-Check:** Websuche nach aktuellen zwischenstaatlichen Kriegen/Gefechten. `conflicts.json` bei Bedarf ergänzen (mit Grund und Datum).
    Gesperrte Paare werden nie gerendert – weder als Wunsch noch zufällig.
