@@ -16,6 +16,10 @@ order = tracks[:]; random.Random(sum(p['seed'] for p in picks)).shuffle(order)  
 
 def slug(s): return ''.join(ch.lower() if ch.isalnum() else '-' for ch in s).strip('-').replace('--', '-')
 
+def country_tag(name):
+    # Hashtag aus dem Ländernamen: "South Korea" -> #southkorea, "USA" -> #usa
+    return '#' + ''.join(ch for ch in name.lower() if ch.isalnum())
+
 def make_title(a, b):
     # YouTube zeigt die ersten 3 Hashtags über dem Titel; Titel max. 100 Zeichen
     for tail in (' – Who wins? #shorts #flags #countries', ' – Who wins? #shorts #flags', ' #shorts #flags', ' #shorts'):
@@ -37,7 +41,8 @@ def job(p):
             'title': make_title(a, b),
             'text': (f"{a} vs {b} in the arena!{req} Spikes hit, shields block – last country standing wins. "
                      f"Which duel should be next? Comment: COUNTRY vs COUNTRY\n\n"
-                     f"#shorts #flags #countries #geography #worldflags #battle #simulation #satisfying #nationsmarble")}
+                     f"#shorts #flags #countries #geography #worldflags #battle #simulation #satisfying #nationsmarble "
+                     f"{country_tag(a)} {country_tag(b)}")}
 
 with ThreadPoolExecutor(par) as ex:
     results = list(ex.map(job, picks))

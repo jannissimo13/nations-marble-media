@@ -56,4 +56,5 @@ Er läuft per geplanter Aufgabe am **Sonntag und Donnerstag um 19:59 (Europe/Ber
 - Keine Paarungen aus `conflicts.json`.
 - Jedes Land höchstens einmal pro Stapel (macht `pick.js`).
 - Keine Musikdateien ins Repo.
+- Beschreibung jedes Shorts: zu den Standard-Hashtags kommen immer die Hashtags der beiden Länder dazu (z. B. Latvia vs Japan → `#latvia #japan`); `batch.py` macht das automatisch, bei manuell gebauten Beschreibungen ebenfalls beachten.
 - Kommentare nur mit Freigabe aus Schritt 0 (pro Lauf, im Chat) schreiben und anpinnen.
