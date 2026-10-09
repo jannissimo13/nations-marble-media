@@ -13,7 +13,8 @@ Er läuft per geplanter Aufgabe am **Sonntag und Donnerstag um 19:59 (Europe/Ber
 - Musik (nur auf dem PC des Nutzers, Lizenz verbietet Weitergabe!): `C:/Users/jawob/Music/Nations Marble/*.mp3` – **nie ins Repo committen**
 
 ## Ablauf
-1. **Repo holen:** `add_repo` Jannissimo13/nations-marble-media (access push), dann klonen. Arbeitsordner `pipeline/`.
+1. **Repo holen:** Wurde das Repo schon vom Prompt der Aufgabe geholt, weiter. Sonst: `add_repo` (ggf. per ToolSearch laden) Jannissimo13/nations-marble-media (access push) und klonen; gibt es kein `add_repo`, `git clone https://github.com/Jannissimo13/nations-marble-media.git` und mit `git push --dry-run` prüfen, ob Pushen geht. Arbeitsordner `pipeline/`.
+   Benötigt werden außerdem: node, python3 (numpy, playwright + Chromium), ffmpeg. Fehlt etwas, nachinstallieren oder dem Nutzer melden.
 2. **Bestand in Buffer:** `list_posts` für den Kanal (Status `scheduled` und `sent` seit dem letzten Lauf).
    `bedarf = 10 − Anzahl scheduled`. Ist der Bedarf 0, nur Schritt 3 und 10 ausführen.
 3. **Aufräumen:** Für jeden Eintrag in `state.json` mit Status `scheduled`, dessen Buffer-Post inzwischen `sent` ist:
