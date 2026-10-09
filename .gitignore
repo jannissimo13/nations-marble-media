@@ -3,3 +3,4 @@
 *.wav
 shorts/manifest.json
 node_modules/
+pipeline/picks.json
