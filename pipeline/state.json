@@ -121,7 +121,7 @@
    "file": "flagduel-289776480-nigeria-vs-lithuania.mp4",
    "postId": "6ac4f32edd742d137c562c7c",
    "dueAt": "2026-10-09T19:00:00Z",
-   "status": "scheduled",
+   "status": "sent",
    "requested": false,
    "winner": "Nigeria",
    "music": "My Synth Bae - The Soundlings.mp3"
@@ -139,7 +139,7 @@
    "file": "flagduel-289777146-denmark-vs-lebanon.mp4",
    "postId": "6ac4f331ce303249ded62a62",
    "dueAt": "2026-10-10T11:00:00Z",
-   "status": "scheduled",
+   "status": "sent",
    "requested": false,
    "winner": "Denmark",
    "music": "Glitcher - Dyalla.mp3"
@@ -157,7 +157,7 @@
    "file": "flagduel-289777269-bolivia-vs-morocco.mp4",
    "postId": "6ac4f335dd742d137c562d73",
    "dueAt": "2026-10-10T19:00:00Z",
-   "status": "scheduled",
+   "status": "sent",
    "requested": false,
    "winner": "Bolivia",
    "music": "After Sunset - Alex Jones _ Xander Jones.mp3"
@@ -175,7 +175,7 @@
    "file": "flagduel-289777395-italy-vs-pakistan.mp4",
    "postId": "6ac4f339dd742d137c562e5c",
    "dueAt": "2026-10-11T11:00:00Z",
-   "status": "scheduled",
+   "status": "sent",
    "requested": false,
    "winner": "Pakistan",
    "music": "Intergalactic - Alex Jones _ Xander Jones.mp3"
@@ -287,13 +287,81 @@
    "music": null,
    "postId": "6ac90517810582311ae63cd2",
    "dueAt": "2026-10-14T11:00:00Z"
+  },
+  {
+   "seed": 741180151,
+   "codes": [
+    "in",
+    "bd"
+   ],
+   "names": [
+    "India",
+    "Bangladesh"
+   ],
+   "file": "flagduel-741180151-india-vs-bangladesh.mp4",
+   "status": "pending",
+   "requested": true,
+   "winner": "India",
+   "music": "Mars 15 at 30k - Dan _Lebo_ Lebowitz, Tone Seeker.mp3"
+  },
+  {
+   "seed": 741180208,
+   "codes": [
+    "pl",
+    "ph"
+   ],
+   "names": [
+    "Poland",
+    "Philippines"
+   ],
+   "file": "flagduel-741180208-poland-vs-philippines.mp4",
+   "status": "pending",
+   "requested": false,
+   "winner": "Poland",
+   "music": "The Theme - Alex Jones _ Xander Jones.mp3"
+  },
+  {
+   "seed": 741180216,
+   "codes": [
+    "mk",
+    "br"
+   ],
+   "names": [
+    "North Macedonia",
+    "Brazil"
+   ],
+   "file": "flagduel-741180216-north-macedonia-vs-brazil.mp4",
+   "status": "pending",
+   "requested": false,
+   "winner": "Brazil",
+   "music": "Disco Dance - Evening Telecast.mp3"
+  },
+  {
+   "seed": 741180456,
+   "codes": [
+    "es",
+    "sn"
+   ],
+   "names": [
+    "Spain",
+    "Senegal"
+   ],
+   "file": "flagduel-741180456-spain-vs-senegal.mp4",
+   "status": "pending",
+   "requested": false,
+   "winner": "Senegal",
+   "music": "Van Life Rager - Everet Almond.mp3"
   }
  ],
  "commented": [
+  "0epJKTU7rSE",
+  "Bv7VoKqc_qM",
   "IEZt95UzzMw",
   "IipwPiKG-gg",
+  "UdLslA_wmdI",
   "WEUflZMB--4",
   "bMqDfTd-BJQ",
+  "jloR9QqwZLU",
   "lr5raYz1bng"
  ]
 }
