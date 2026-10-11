@@ -299,10 +299,12 @@
     "Bangladesh"
    ],
    "file": "flagduel-741180151-india-vs-bangladesh.mp4",
-   "status": "pending",
+   "status": "scheduled",
    "requested": true,
    "winner": "India",
-   "music": "Mars 15 at 30k - Dan _Lebo_ Lebowitz, Tone Seeker.mp3"
+   "music": "Mars 15 at 30k - Dan _Lebo_ Lebowitz, Tone Seeker.mp3",
+   "postId": "6acbd2c5ea568e911a38b207",
+   "dueAt": "2026-10-14T19:00:00Z"
   },
   {
    "seed": 741180208,
@@ -315,10 +317,12 @@
     "Philippines"
    ],
    "file": "flagduel-741180208-poland-vs-philippines.mp4",
-   "status": "pending",
+   "status": "scheduled",
    "requested": false,
    "winner": "Poland",
-   "music": "The Theme - Alex Jones _ Xander Jones.mp3"
+   "music": "The Theme - Alex Jones _ Xander Jones.mp3",
+   "postId": "6acbd2ccfa026cfb810f022f",
+   "dueAt": "2026-10-15T11:00:00Z"
   },
   {
    "seed": 741180216,
@@ -331,10 +335,12 @@
     "Brazil"
    ],
    "file": "flagduel-741180216-north-macedonia-vs-brazil.mp4",
-   "status": "pending",
+   "status": "scheduled",
    "requested": false,
    "winner": "Brazil",
-   "music": "Disco Dance - Evening Telecast.mp3"
+   "music": "Disco Dance - Evening Telecast.mp3",
+   "postId": "6acbd2d28e8dd50ffc5049c3",
+   "dueAt": "2026-10-15T19:00:00Z"
   },
   {
    "seed": 741180456,
@@ -347,10 +353,12 @@
     "Senegal"
    ],
    "file": "flagduel-741180456-spain-vs-senegal.mp4",
-   "status": "pending",
+   "status": "scheduled",
    "requested": false,
    "winner": "Senegal",
-   "music": "Van Life Rager - Everet Almond.mp3"
+   "music": "Van Life Rager - Everet Almond.mp3",
+   "postId": "6acbd2dba9411fbcc5555771",
+   "dueAt": "2026-10-16T11:00:00Z"
   }
  ],
  "commented": [
