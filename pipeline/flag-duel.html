@@ -40,6 +40,12 @@ canvas { height: 100vh; width: auto; max-width: calc(100vw - 32px); aspect-ratio
     outro: 4.5
   };
 
+  const MODES = ['classic', 'pinball', 'shrink', 'spinner', 'storm'];
+  const MODE_INFO = { classic: 'CLASSIC ARENA', pinball: 'PINBALL ARENA', shrink: 'SHRINKING ARENA', spinner: 'SPINNER ARENA', storm: 'SPIKE STORM' };
+  const MODE_PARAMS = { pegR: 54, pegDist: 200, spinLen: 200, spinTh: 24, spinW: 1.15, shrinkTo: 320, shrinkFrom: 10, shrinkDur: 32 };
+
+  const MODE_LIVES = { classic: 5, pinball: 4, spinner: 4, storm: 8, shrink: 6 };
+
   function mulberry(seed) {
     let a = seed >>> 0;
     return () => {
@@ -54,6 +60,8 @@ canvas { height: 100vh; width: auto; max-width: calc(100vw - 32px); aspect-ratio
     this.cfg = Object.assign({}, CFG, opts || {});
     this.rnd = mulberry(seed);
     const rnd = this.rnd, c = this.cfg;
+    this.mode = (opts && opts.mode) || 'classic';
+    if (!(opts && opts.lives)) c.lives = MODE_LIVES[this.mode] || c.lives;
     const a = Math.floor(rnd() * nCountries);
     let b = Math.floor(rnd() * (nCountries - 1)); if (b >= a) b++;
     // Wunsch-Duell: Länder fest vorgeben, Zufallsfolge bleibt identisch
@@ -76,6 +84,16 @@ canvas { height: 100vh; width: auto; max-width: calc(100vw - 32px); aspect-ratio
     this.items = [];          // {type:'spike'|'shield', x, y, born}
     this.next = { spike: c.spikeFirst, shield: c.shieldFirst };
     this.stats = { hits: 0, blocks: 0, wall: 0 };
+    // Arena-Modus (macht jedes Short anders)
+    this.R = c.R; this.pegs = []; this.spin = null;
+    const P = MODE_PARAMS;
+    if (this.mode === 'pinball') {
+      const a0 = rnd() * Math.PI * 2, n = 3;
+      for (let k = 0; k < n; k++) { const a = a0 + k * Math.PI * 2 / n; this.pegs.push({ x: c.cx + Math.cos(a) * P.pegDist, y: c.cy + Math.sin(a) * P.pegDist, r: P.pegR }); }
+      this.pegs.push({ x: c.cx, y: c.cy, r: P.pegR * 0.8 });
+    }
+    if (this.mode === 'spinner') this.spin = { a: rnd() * Math.PI, w: (rnd() < 0.5 ? -1 : 1) * P.spinW, len: P.spinLen, th: P.spinTh };
+    if (this.mode === 'storm') { this.cfg.spikeRespawn = [0.5, 1.1]; }
   }
 
   Duel.prototype.speedNow = function () {
@@ -87,10 +105,12 @@ canvas { height: 100vh; width: auto; max-width: calc(100vw - 32px); aspect-ratio
   Duel.prototype.spawn = function (type) {
     const c = this.cfg, rnd = this.rnd;
     for (let k = 0; k < 40; k++) {
-      const ang = rnd() * Math.PI * 2, rad = Math.sqrt(rnd()) * (c.R - c.itemR - 40);
+      const ang = rnd() * Math.PI * 2, rad = Math.sqrt(rnd()) * (this.R - c.itemR - 40);
       const x = c.cx + Math.cos(ang) * rad, y = c.cy + Math.sin(ang) * rad;
       const free = this.m.every(m => Math.hypot(m.x - x, m.y - y) > c.r + c.itemR + 60) &&
-        this.items.every(it => Math.hypot(it.x - x, it.y - y) > c.itemR * 3);
+        this.items.every(it => Math.hypot(it.x - x, it.y - y) > c.itemR * 3) &&
+        this.pegs.every(p => Math.hypot(p.x - x, p.y - y) > p.r + c.itemR + 24) &&
+        (!this.spin || Math.hypot(x - c.cx, y - c.cy) > this.spin.len + c.itemR + 30);
       if (free) { this.items.push({ type, x, y, born: this.t }); this.events.push({ t: this.t, type: 'spawn', item: type, x, y }); return; }
     }
     this.next[type] = this.gameT() + 0.5; // später erneut versuchen
@@ -105,9 +125,17 @@ canvas { height: 100vh; width: auto; max-width: calc(100vw - 32px); aspect-ratio
 
     const gt = this.gameT();
     // Items spawnen
+    if (this.mode === 'shrink') {
+      const P = MODE_PARAMS, k = Math.min(1, Math.max(0, (gt - P.shrinkFrom) / P.shrinkDur));
+      this.R = c.R - (c.R - P.shrinkTo) * k;
+      for (const it of this.items) { const d = Math.hypot(it.x - c.cx, it.y - c.cy), lim = this.R - c.itemR - 20; if (d > lim) { it.x = c.cx + (it.x - c.cx) * lim / d; it.y = c.cy + (it.y - c.cy) * lim / d; } }
+    }
+    if (this.spin) this.spin.a += this.spin.w * dt;
     for (const type of ['spike', 'shield']) {
-      if (this.next[type] !== null && gt >= this.next[type] && !this.items.some(i => i.type === type)) {
+      const cnt = this.items.filter(i => i.type === type).length, max = (this.mode === 'storm' && type === 'spike') ? 2 : 1;
+      if (this.next[type] !== null && gt >= this.next[type] && cnt < max) {
         this.next[type] = null; this.spawn(type);
+        if (max > 1 && cnt + 1 < max) this.next[type] = gt + 0.4;
       }
     }
     const v = this.speedNow();
@@ -119,7 +147,7 @@ canvas { height: 100vh; width: auto; max-width: calc(100vw - 32px); aspect-ratio
         m.rot += (m.vx > 0 ? 1 : -1) * v * h / c.r * 0.6;
         // Wand
         const dx = m.x - c.cx, dy = m.y - c.cy, d = Math.hypot(dx, dy);
-        if (d + c.r > c.R) {
+        if (d + c.r > this.R) {
           const nx = dx / d, ny = dy / d, dot = m.vx * nx + m.vy * ny;
           if (dot > 0) {
             m.vx -= 2 * dot * nx; m.vy -= 2 * dot * ny;
@@ -127,9 +155,26 @@ canvas { height: 100vh; width: auto; max-width: calc(100vw - 32px); aspect-ratio
             const j = (this.rnd() - 0.5) * 0.16, cs = Math.cos(j), sn = Math.sin(j);
             const vx = m.vx * cs - m.vy * sn, vy = m.vx * sn + m.vy * cs; m.vx = vx; m.vy = vy;
             this.stats.wall++;
-            this.events.push({ t: this.t, type: 'wall', who: this.m.indexOf(m), x: c.cx + nx * c.R, y: c.cy + ny * c.R });
+            this.events.push({ t: this.t, type: 'wall', who: this.m.indexOf(m), x: c.cx + nx * this.R, y: c.cy + ny * this.R });
           }
-          m.x = c.cx + nx * (c.R - c.r); m.y = c.cy + ny * (c.R - c.r);
+          m.x = c.cx + nx * (this.R - c.r); m.y = c.cy + ny * (this.R - c.r);
+        }
+      }
+      // Hindernisse (Pinball-Pfosten, Spinner)
+      for (const m of this.m) {
+        const hitObs = (ox, oy, rad) => {
+          const dx = m.x - ox, dy = m.y - oy, d = Math.hypot(dx, dy) || 1e-6;
+          if (d >= c.r + rad) return;
+          const nx = dx / d, ny = dy / d;
+          m.x = ox + nx * (c.r + rad); m.y = oy + ny * (c.r + rad);
+          const dot = m.vx * nx + m.vy * ny;
+          if (dot < 0) { m.vx -= 2 * dot * nx; m.vy -= 2 * dot * ny; this.events.push({ t: this.t, type: 'wall', who: this.m.indexOf(m), x: ox + nx * rad, y: oy + ny * rad }); }
+        };
+        for (const p of this.pegs) hitObs(p.x, p.y, p.r);
+        if (this.spin) {
+          const sp = this.spin, ax = c.cx - Math.cos(sp.a) * sp.len, ay = c.cy - Math.sin(sp.a) * sp.len, bx = c.cx + Math.cos(sp.a) * sp.len, by = c.cy + Math.sin(sp.a) * sp.len;
+          const ex = bx - ax, ey = by - ay, tt = Math.max(0, Math.min(1, ((m.x - ax) * ex + (m.y - ay) * ey) / (ex * ex + ey * ey)));
+          hitObs(ax + ex * tt, ay + ey * tt, sp.th);
         }
       }
       // Kugel-Kugel
@@ -201,7 +246,7 @@ canvas { height: 100vh; width: auto; max-width: calc(100vw - 32px); aspect-ratio
 
   Duel.prototype.done = function () { return this.phase === 'end' && this.t - this.endT >= this.cfg.outro; };
 
-  root.FlagDuel = { Duel, CFG, mulberry };
+  root.FlagDuel = { Duel, CFG, mulberry, MODES, MODE_INFO, MODE_PARAMS };
 })(typeof window !== 'undefined' ? window : globalThis);
 </script>
 <script>
@@ -220,9 +265,18 @@ canvas { height: 100vh; width: auto; max-width: calc(100vw - 32px); aspect-ratio
 
   /* ---------- Zustand ---------- */
   let duel, evIdx, fx, trails, shownOvertime, seed, forcedIds = null;
-  function init(s, ids) {
-    seed = s >>> 0; forcedIds = ids || null;
-    duel = new S.Duel(C.length, seed, forcedIds ? { ids: forcedIds } : undefined);
+  const THEMES = {
+    classic: { bg: ['#0d1024', '#090b1a', '#05060d'], in: '#141a3a', out: '#090c1c', ring: '#2b3360', glow: 'rgba(140,160,255,.55)', accent: '#8ea2ff' },
+    pinball: { bg: ['#1c0a33', '#10071f', '#07030f'], in: '#2a1050', out: '#12062a', ring: '#7a35d6', glow: 'rgba(190,90,255,.6)', accent: '#d28bff' },
+    shrink:  { bg: ['#2a0b10', '#180609', '#0a0305'], in: '#3a1218', out: '#1a070b', ring: '#b3243a', glow: 'rgba(255,70,70,.55)', accent: '#ff6b6b' },
+    spinner: { bg: ['#082a1e', '#06180f', '#030a07'], in: '#0f3a2a', out: '#07180f', ring: '#1fa872', glow: 'rgba(60,230,150,.5)', accent: '#5ff2b0' },
+    storm:   { bg: ['#2a1f06', '#181004', '#0a0702'], in: '#3a2a0a', out: '#1a1204', ring: '#d6931a', glow: 'rgba(255,190,50,.55)', accent: '#ffd166' }
+  };
+  let mode = 'classic';
+  const TH = () => THEMES[mode] || THEMES.classic;
+  function init(s, ids, md) {
+    seed = s >>> 0; forcedIds = ids || null; mode = md || 'classic';
+    duel = new S.Duel(C.length, seed, { ids: forcedIds || undefined, mode });
     evIdx = 0; fx = []; trails = [[], []]; shownOvertime = false;
   }
 
@@ -324,7 +378,7 @@ canvas { height: 100vh; width: auto; max-width: calc(100vw - 32px); aspect-ratio
   /* ---------- Szene ---------- */
   function drawBackground(t) {
     const g = ctx.createLinearGradient(0, 0, 0, H);
-    g.addColorStop(0, '#0d1024'); g.addColorStop(0.55, '#090b1a'); g.addColorStop(1, '#05060d');
+    g.addColorStop(0, TH().bg[0]); g.addColorStop(0.55, TH().bg[1]); g.addColorStop(1, TH().bg[2]);
     ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
     // diagonale Streifen
     ctx.save(); ctx.globalAlpha = 0.04; ctx.strokeStyle = '#ffffff'; ctx.lineWidth = 2;
@@ -342,6 +396,7 @@ canvas { height: 100vh; width: auto; max-width: calc(100vw - 32px); aspect-ratio
   function drawHeader(t) {
     const intro = ease(t / 0.55);
     text('WHICH COUNTRY WINS?', W / 2, 250, 56, 'rgba(242,244,250,.92)', { w: 700, f: FD, glow: 'rgba(0,0,0,.6)', glowB: 12 });
+    text(S.MODE_INFO[mode], W / 2, 170, 42, TH().accent, { w: 700, f: FU, glow: TH().accent, glowB: 18 });
     const cards = [290, 790];
     duel.m.forEach((m, i) => {
       const slide = (1 - intro) * (i === 0 ? -520 : 520);
@@ -382,26 +437,58 @@ canvas { height: 100vh; width: auto; max-width: calc(100vw - 32px); aspect-ratio
   }
 
   function drawArena(t) {
-    const c = duel.cfg, a = ease((t - 0.2) / 0.6);
+    const c = duel.cfg, a = ease((t - 0.2) / 0.6), R = duel.R, th = TH();
     ctx.save(); ctx.globalAlpha = a;
     // Außenring mit Glow
-    ctx.shadowColor = 'rgba(140,160,255,.55)'; ctx.shadowBlur = 50;
-    ctx.beginPath(); ctx.arc(c.cx, c.cy, c.R + 8, 0, Math.PI * 2); ctx.lineWidth = 16; ctx.strokeStyle = '#2b3360'; ctx.stroke();
+    ctx.shadowColor = th.glow; ctx.shadowBlur = 50;
+    ctx.beginPath(); ctx.arc(c.cx, c.cy, c.R + 8, 0, Math.PI * 2); ctx.lineWidth = 16; ctx.strokeStyle = th.ring; ctx.stroke();
     ctx.shadowBlur = 0;
     const rg = ctx.createRadialGradient(c.cx, c.cy - 120, 40, c.cx, c.cy, c.R);
-    rg.addColorStop(0, '#141a3a'); rg.addColorStop(1, '#090c1c');
+    rg.addColorStop(0, th.in); rg.addColorStop(1, th.out);
     ctx.beginPath(); ctx.arc(c.cx, c.cy, c.R, 0, Math.PI * 2); ctx.fillStyle = rg; ctx.fill();
     // Innenlinien
     ctx.strokeStyle = 'rgba(255,255,255,.05)'; ctx.lineWidth = 3;
     for (const f of [0.33, 0.66]) { ctx.beginPath(); ctx.arc(c.cx, c.cy, c.R * f, 0, Math.PI * 2); ctx.stroke(); }
     ctx.beginPath(); ctx.moveTo(c.cx - c.R, c.cy); ctx.lineTo(c.cx + c.R, c.cy); ctx.stroke();
+    // schrumpfende Arena: Gefahrenzone außerhalb des aktuellen Radius
+    if (mode === 'shrink' && R < c.R - 0.5) {
+      ctx.save(); ctx.beginPath(); ctx.arc(c.cx, c.cy, c.R, 0, Math.PI * 2); ctx.arc(c.cx, c.cy, R, 0, Math.PI * 2, true); ctx.clip('evenodd');
+      ctx.fillStyle = 'rgba(8,2,4,.93)'; ctx.fillRect(c.cx - c.R, c.cy - c.R, c.R * 2, c.R * 2);
+      ctx.strokeStyle = 'rgba(255,60,60,.22)'; ctx.lineWidth = 14;
+      for (let k = -c.R * 2; k < c.R * 2; k += 46) { ctx.beginPath(); ctx.moveTo(c.cx + k, c.cy - c.R); ctx.lineTo(c.cx + k + c.R, c.cy + c.R); ctx.stroke(); }
+      ctx.restore();
+      ctx.save(); ctx.shadowColor = '#ff2e4d'; ctx.shadowBlur = 26; ctx.beginPath(); ctx.arc(c.cx, c.cy, R, 0, Math.PI * 2); ctx.lineWidth = 10; ctx.strokeStyle = '#ff4d5e'; ctx.stroke(); ctx.restore();
+    }
     // zweifarbiger Rand
     for (const i of [0, 1]) {
       ctx.beginPath(); ctx.arc(c.cx, c.cy, c.R + 8, Math.PI / 2 + i * Math.PI, Math.PI * 1.5 + i * Math.PI);
       ctx.lineWidth = 6; ctx.strokeStyle = PCOL[i]; ctx.globalAlpha = a * 0.85; ctx.stroke();
     }
     ctx.globalAlpha = a * 0.18;
-    text('NATIONS MARBLE', c.cx, c.cy, 64, '#ffffff', { w: 900 });
+    if (mode !== 'spinner' && mode !== 'pinball') text('NATIONS MARBLE', c.cx, c.cy, 64, '#ffffff', { w: 900 });
+    ctx.globalAlpha = a;
+    // Pinball-Pfosten
+    for (const p of duel.pegs) {
+      ctx.save(); ctx.shadowColor = th.accent; ctx.shadowBlur = 36;
+      const pg = ctx.createRadialGradient(p.x - p.r * 0.3, p.y - p.r * 0.35, 4, p.x, p.y, p.r);
+      pg.addColorStop(0, '#ffffff'); pg.addColorStop(0.35, th.accent); pg.addColorStop(1, th.ring);
+      ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2); ctx.fillStyle = pg; ctx.fill();
+      ctx.shadowBlur = 0; ctx.lineWidth = 6; ctx.strokeStyle = '#ffffff'; ctx.stroke();
+      ctx.beginPath(); ctx.arc(p.x, p.y, p.r * 0.45, 0, Math.PI * 2); ctx.lineWidth = 4; ctx.strokeStyle = 'rgba(255,255,255,.55)'; ctx.stroke();
+      ctx.restore();
+    }
+    // Spinner
+    if (duel.spin) {
+      const sp = duel.spin;
+      ctx.save(); ctx.translate(c.cx, c.cy); ctx.rotate(sp.a);
+      ctx.shadowColor = th.accent; ctx.shadowBlur = 30;
+      ctx.beginPath(); ctx.roundRect(-sp.len - sp.th, -sp.th, (sp.len + sp.th) * 2, sp.th * 2, sp.th); 
+      const bg = ctx.createLinearGradient(0, -sp.th, 0, sp.th); bg.addColorStop(0, '#ffffff'); bg.addColorStop(0.4, th.accent); bg.addColorStop(1, th.ring);
+      ctx.fillStyle = bg; ctx.fill(); ctx.shadowBlur = 0; ctx.lineWidth = 5; ctx.strokeStyle = '#ffffff'; ctx.stroke();
+      for (const sgn of [-1, 1]) { ctx.beginPath(); ctx.arc(sgn * sp.len, 0, sp.th * 0.45, 0, Math.PI * 2); ctx.fillStyle = th.out; ctx.fill(); }
+      ctx.beginPath(); ctx.arc(0, 0, sp.th * 1.2, 0, Math.PI * 2); ctx.fillStyle = th.out; ctx.fill(); ctx.lineWidth = 6; ctx.strokeStyle = '#ffffff'; ctx.stroke();
+      ctx.restore();
+    }
     ctx.restore();
   }
 
@@ -568,18 +655,18 @@ canvas { height: 100vh; width: auto; max-width: calc(100vw - 32px); aspect-ratio
   }
 
   if (RENDER) {
-    window.__init = (s, ids) => { init(s, ids); return document.fonts.ready.then(() => Promise.all(flagImg.map(i => i.decode()))).then(() => true); };
+    window.__init = (s, ids, md) => { init(s, ids, md); return document.fonts.ready.then(() => Promise.all(flagImg.map(i => i.decode()))).then(() => true); };
     window.__frame = (q) => { if (window.__f) advance(1 / FPS); window.__f = 1; draw(); return cv.toDataURL('image/jpeg', q || 0.9); };
-    window.__state = () => ({ t: duel.t, phase: duel.phase, done: duel.done(), endT: duel.endT, winner: duel.winner, ids: duel.ids, names: duel.ids.map(i => C[i].n), lives: duel.m.map(m => m.lives), events: duel.events });
+    window.__state = () => ({ t: duel.t, phase: duel.phase, done: duel.done(), endT: duel.endT, winner: duel.winner, mode, ids: duel.ids, names: duel.ids.map(i => C[i].n), lives: duel.m.map(m => m.lives), events: duel.events });
   } else {
     // Live-Modus: Endlosschleife mit zufälligen Duellen
-    init(parseInt(params.get('seed') || '', 10) || Math.floor(Math.random() * 1e9));
+    init(parseInt(params.get('seed') || '', 10) || Math.floor(Math.random() * 1e9), null, params.get('mode') || S.MODES[Math.floor(Math.random() * S.MODES.length)]);
     let last = performance.now(), acc = 0;
     const loop = now => {
       acc += Math.min(0.1, (now - last) / 1000); last = now;
       while (acc >= SIM_DT) { duel.step(SIM_DT); pumpEvents(); acc -= SIM_DT; if ((duel.t * 60 | 0) % 2) duel.m.forEach((m, i) => { trails[i].push([m.x, m.y]); if (trails[i].length > 10) trails[i].shift(); }); }
       draw();
-      if (duel.done()) init(Math.floor(Math.random() * 1e9));
+      if (duel.done()) init(Math.floor(Math.random() * 1e9), null, S.MODES[Math.floor(Math.random() * S.MODES.length)]);
       requestAnimationFrame(loop);
     };
     document.fonts.ready.then(() => requestAnimationFrame(t => { last = t; loop(t); }));

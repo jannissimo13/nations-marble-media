@@ -39,7 +39,8 @@ Er läuft per geplanter Aufgabe am **Sonntag und Donnerstag um 19:59 (Europe/Ber
    Gesperrte Paare werden nie gerendert – weder als Wunsch noch zufällig.
 6. **Musik:** Ordner auf dem PC auflisten und alle MP3s per `device_stage_files` in die Arbeitsumgebung holen.
    Ist der PC nicht erreichbar: ohne Musik rendern (nur Sound-Effekte) und das im Bericht erwähnen.
-7. **Auswählen:** `node pick.js '{"count":<bedarf>,"requests":[["de","fr"], ...],"avoidRecent":40}' > picks.json`
+7. **Auswählen (mit Arena-Modi):** `pick.js` verteilt reihum 5 Modi (classic, pinball, shrink, spinner, storm) auf den Stapel und gibt `mode` je Duell aus; `batch.py` übernimmt ihn für Video, Titelbeschreibung und `manifest.json`.
+    `node pick.js '{"count":<bedarf>,"requests":[["de","fr"], ...],"avoidRecent":40}' > picks.json`
 8. **Rendern:** `python3 batch.py picks.json <musikordner oder ""> ../shorts 2` – Ausgabe muss für jede Datei `ok` zeigen.
    Stichprobe: ein Frame aus einem Video ansehen (z. B. bei 30 s), Lautheit ≈ −14 LUFS.
 9. **Hochladen:** `shorts/*.mp4` und `pipeline/state.json` committen, `git fetch` + pushen. Jeden Raw-Link mit `curl -I` prüfen (HTTP 200).
@@ -47,7 +48,7 @@ Er läuft per geplanter Aufgabe am **Sonntag und Donnerstag um 19:59 (Europe/Ber
     `channelId` siehe oben, `mode: addToQueue`, `schedulingType: automatic`, `text` = Beschreibung,
     `assets: [{video: {url: <raw-link>, metadata: {title: "<A> vs <B>"}}}]`,
     `metadata.youtube: {title, categoryId: "20", madeForKids: false, privacy: "public", notifySubscribers: true, isAiGenerated: false}`.
-    Danach Post-ID und `dueAt` in `state.json` eintragen (`status: scheduled`) und erneut pushen. `manifest.json` nicht committen.
+    Danach Post-ID, `dueAt` und `mode` in `state.json` eintragen (`status: scheduled`) und erneut pushen. `manifest.json` nicht committen.
 11. **Bericht an den Nutzer** (kurz, Deutsch): wie viele Shorts eingeplant, welche Paarungen, ob Wünsche aus Kommentaren dabei waren,
     ob Musik genutzt wurde, gesperrte Wünsche, Fehler.
 

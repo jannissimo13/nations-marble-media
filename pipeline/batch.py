@@ -20,6 +20,14 @@ def country_tag(name):
     # Hashtag aus dem Ländernamen: "South Korea" -> #southkorea, "USA" -> #usa
     return '#' + ''.join(ch for ch in name.lower() if ch.isalnum())
 
+MODE_TEXT = {
+    'classic': 'in the arena',
+    'pinball': 'in the PINBALL arena – bumpers everywhere',
+    'shrink': 'in the SHRINKING arena – the walls are closing in',
+    'spinner': 'in the SPINNER arena – dodge the deadly bar',
+    'storm': 'in the SPIKE STORM – double the spikes',
+}
+
 def make_title(a, b):
     # YouTube zeigt die ersten 3 Hashtags über dem Titel; Titel max. 100 Zeichen
     for tail in (' – Who wins? #shorts #flags #countries', ' – Who wins? #shorts #flags', ' #shorts #flags', ' #shorts'):
@@ -31,7 +39,7 @@ def job(p):
     a, b = p['names']
     fname = f"flagduel-{p['seed']}-{slug(a)}-vs-{slug(b)}.mp4"
     music = os.path.join(music_dir, order[picks.index(p) % len(order)]) if tracks else '-'
-    r = subprocess.run(['python3', os.path.join(HERE, 'render.py'), str(p['seed']), os.path.join(out_dir, fname), music, json.dumps(p['ids'])],
+    r = subprocess.run(['python3', os.path.join(HERE, 'render.py'), str(p['seed']), os.path.join(out_dir, fname), music, json.dumps(p['ids']), p.get('mode') or 'classic'],
                        capture_output=True, text=True)
     if r.returncode != 0:
         return {**p, 'file': fname, 'error': r.stderr[-800:]}
@@ -39,7 +47,8 @@ def job(p):
     req = ' Requested in the comments!' if p.get('requested') else ''
     return {**p, 'file': fname, 'music': os.path.basename(music) if tracks else None, 'seconds': res['seconds'], 'winner': res['winner'],
             'title': make_title(a, b),
-            'text': (f"{a} vs {b} in the arena!{req} Spikes hit, shields block – last country standing wins. "
+            'mode': p.get('mode') or 'classic',
+            'text': (f"{a} vs {b} {MODE_TEXT.get(p.get('mode') or 'classic', 'in the arena')}!{req} Spikes hit, shields block – last country standing wins. "
                      f"Which duel should be next? Comment: COUNTRY vs COUNTRY\n\n"
                      f"#shorts #flags #countries #geography #worldflags #battle #simulation #satisfying #nationsmarble "
                      f"{country_tag(a)} {country_tag(b)}")}

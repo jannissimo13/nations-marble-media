@@ -15,6 +15,12 @@
     outro: 4.5
   };
 
+  const MODES = ['classic', 'pinball', 'shrink', 'spinner', 'storm'];
+  const MODE_INFO = { classic: 'CLASSIC ARENA', pinball: 'PINBALL ARENA', shrink: 'SHRINKING ARENA', spinner: 'SPINNER ARENA', storm: 'SPIKE STORM' };
+  const MODE_PARAMS = { pegR: 54, pegDist: 200, spinLen: 200, spinTh: 24, spinW: 1.15, shrinkTo: 320, shrinkFrom: 10, shrinkDur: 32 };
+
+  const MODE_LIVES = { classic: 5, pinball: 4, spinner: 4, storm: 8, shrink: 6 };
+
   function mulberry(seed) {
     let a = seed >>> 0;
     return () => {
@@ -29,6 +35,8 @@
     this.cfg = Object.assign({}, CFG, opts || {});
     this.rnd = mulberry(seed);
     const rnd = this.rnd, c = this.cfg;
+    this.mode = (opts && opts.mode) || 'classic';
+    if (!(opts && opts.lives)) c.lives = MODE_LIVES[this.mode] || c.lives;
     const a = Math.floor(rnd() * nCountries);
     let b = Math.floor(rnd() * (nCountries - 1)); if (b >= a) b++;
     // Wunsch-Duell: Länder fest vorgeben, Zufallsfolge bleibt identisch
@@ -51,6 +59,16 @@
     this.items = [];          // {type:'spike'|'shield', x, y, born}
     this.next = { spike: c.spikeFirst, shield: c.shieldFirst };
     this.stats = { hits: 0, blocks: 0, wall: 0 };
+    // Arena-Modus (macht jedes Short anders)
+    this.R = c.R; this.pegs = []; this.spin = null;
+    const P = MODE_PARAMS;
+    if (this.mode === 'pinball') {
+      const a0 = rnd() * Math.PI * 2, n = 3;
+      for (let k = 0; k < n; k++) { const a = a0 + k * Math.PI * 2 / n; this.pegs.push({ x: c.cx + Math.cos(a) * P.pegDist, y: c.cy + Math.sin(a) * P.pegDist, r: P.pegR }); }
+      this.pegs.push({ x: c.cx, y: c.cy, r: P.pegR * 0.8 });
+    }
+    if (this.mode === 'spinner') this.spin = { a: rnd() * Math.PI, w: (rnd() < 0.5 ? -1 : 1) * P.spinW, len: P.spinLen, th: P.spinTh };
+    if (this.mode === 'storm') { this.cfg.spikeRespawn = [0.5, 1.1]; }
   }
 
   Duel.prototype.speedNow = function () {
@@ -62,10 +80,12 @@
   Duel.prototype.spawn = function (type) {
     const c = this.cfg, rnd = this.rnd;
     for (let k = 0; k < 40; k++) {
-      const ang = rnd() * Math.PI * 2, rad = Math.sqrt(rnd()) * (c.R - c.itemR - 40);
+      const ang = rnd() * Math.PI * 2, rad = Math.sqrt(rnd()) * (this.R - c.itemR - 40);
       const x = c.cx + Math.cos(ang) * rad, y = c.cy + Math.sin(ang) * rad;
       const free = this.m.every(m => Math.hypot(m.x - x, m.y - y) > c.r + c.itemR + 60) &&
-        this.items.every(it => Math.hypot(it.x - x, it.y - y) > c.itemR * 3);
+        this.items.every(it => Math.hypot(it.x - x, it.y - y) > c.itemR * 3) &&
+        this.pegs.every(p => Math.hypot(p.x - x, p.y - y) > p.r + c.itemR + 24) &&
+        (!this.spin || Math.hypot(x - c.cx, y - c.cy) > this.spin.len + c.itemR + 30);
       if (free) { this.items.push({ type, x, y, born: this.t }); this.events.push({ t: this.t, type: 'spawn', item: type, x, y }); return; }
     }
     this.next[type] = this.gameT() + 0.5; // später erneut versuchen
@@ -80,9 +100,17 @@
 
     const gt = this.gameT();
     // Items spawnen
+    if (this.mode === 'shrink') {
+      const P = MODE_PARAMS, k = Math.min(1, Math.max(0, (gt - P.shrinkFrom) / P.shrinkDur));
+      this.R = c.R - (c.R - P.shrinkTo) * k;
+      for (const it of this.items) { const d = Math.hypot(it.x - c.cx, it.y - c.cy), lim = this.R - c.itemR - 20; if (d > lim) { it.x = c.cx + (it.x - c.cx) * lim / d; it.y = c.cy + (it.y - c.cy) * lim / d; } }
+    }
+    if (this.spin) this.spin.a += this.spin.w * dt;
     for (const type of ['spike', 'shield']) {
-      if (this.next[type] !== null && gt >= this.next[type] && !this.items.some(i => i.type === type)) {
+      const cnt = this.items.filter(i => i.type === type).length, max = (this.mode === 'storm' && type === 'spike') ? 2 : 1;
+      if (this.next[type] !== null && gt >= this.next[type] && cnt < max) {
         this.next[type] = null; this.spawn(type);
+        if (max > 1 && cnt + 1 < max) this.next[type] = gt + 0.4;
       }
     }
     const v = this.speedNow();
@@ -94,7 +122,7 @@
         m.rot += (m.vx > 0 ? 1 : -1) * v * h / c.r * 0.6;
         // Wand
         const dx = m.x - c.cx, dy = m.y - c.cy, d = Math.hypot(dx, dy);
-        if (d + c.r > c.R) {
+        if (d + c.r > this.R) {
           const nx = dx / d, ny = dy / d, dot = m.vx * nx + m.vy * ny;
           if (dot > 0) {
             m.vx -= 2 * dot * nx; m.vy -= 2 * dot * ny;
@@ -102,9 +130,26 @@
             const j = (this.rnd() - 0.5) * 0.16, cs = Math.cos(j), sn = Math.sin(j);
             const vx = m.vx * cs - m.vy * sn, vy = m.vx * sn + m.vy * cs; m.vx = vx; m.vy = vy;
             this.stats.wall++;
-            this.events.push({ t: this.t, type: 'wall', who: this.m.indexOf(m), x: c.cx + nx * c.R, y: c.cy + ny * c.R });
+            this.events.push({ t: this.t, type: 'wall', who: this.m.indexOf(m), x: c.cx + nx * this.R, y: c.cy + ny * this.R });
           }
-          m.x = c.cx + nx * (c.R - c.r); m.y = c.cy + ny * (c.R - c.r);
+          m.x = c.cx + nx * (this.R - c.r); m.y = c.cy + ny * (this.R - c.r);
+        }
+      }
+      // Hindernisse (Pinball-Pfosten, Spinner)
+      for (const m of this.m) {
+        const hitObs = (ox, oy, rad) => {
+          const dx = m.x - ox, dy = m.y - oy, d = Math.hypot(dx, dy) || 1e-6;
+          if (d >= c.r + rad) return;
+          const nx = dx / d, ny = dy / d;
+          m.x = ox + nx * (c.r + rad); m.y = oy + ny * (c.r + rad);
+          const dot = m.vx * nx + m.vy * ny;
+          if (dot < 0) { m.vx -= 2 * dot * nx; m.vy -= 2 * dot * ny; this.events.push({ t: this.t, type: 'wall', who: this.m.indexOf(m), x: ox + nx * rad, y: oy + ny * rad }); }
+        };
+        for (const p of this.pegs) hitObs(p.x, p.y, p.r);
+        if (this.spin) {
+          const sp = this.spin, ax = c.cx - Math.cos(sp.a) * sp.len, ay = c.cy - Math.sin(sp.a) * sp.len, bx = c.cx + Math.cos(sp.a) * sp.len, by = c.cy + Math.sin(sp.a) * sp.len;
+          const ex = bx - ax, ey = by - ay, tt = Math.max(0, Math.min(1, ((m.x - ax) * ex + (m.y - ay) * ey) / (ex * ex + ey * ey)));
+          hitObs(ax + ex * tt, ay + ey * tt, sp.th);
         }
       }
       // Kugel-Kugel
@@ -176,5 +221,5 @@
 
   Duel.prototype.done = function () { return this.phase === 'end' && this.t - this.endT >= this.cfg.outro; };
 
-  root.FlagDuel = { Duel, CFG, mulberry };
+  root.FlagDuel = { Duel, CFG, mulberry, MODES, MODE_INFO, MODE_PARAMS };
 })(typeof window !== 'undefined' ? window : globalThis);

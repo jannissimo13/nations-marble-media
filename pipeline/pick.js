@@ -3,7 +3,7 @@
 // Ausgabe: JSON-Liste [{seed, ids, codes, names, dur, left, changes, requested}]
 require('./sim.js');
 const fs = require('fs');
-const { Duel } = globalThis.FlagDuel;
+const { Duel, MODES } = globalThis.FlagDuel;
 const C = JSON.parse(fs.readFileSync(__dirname + '/countries.json', 'utf8'));
 const byCode = Object.fromEntries(C.map(x => [x.c, x.i]));
 const conf = JSON.parse(fs.readFileSync(__dirname + '/conflicts.json', 'utf8'));
@@ -18,8 +18,8 @@ const usedSeeds = new Set(state.posts.map(p => p.seed));
 // bekannte Länder kommen bei Zufallsduellen häufiger dran
 const BIG = new Set(['de','fr','gb','us','br','it','es','jp','cn','in','mx','ca','ar','pt','nl','tr','kr','au','pl','ua','se','ch','at','eg','ng','za','sa','ma','gr','ie','dk','no','co','id','ph','vn']);
 
-function simulate(seed, ids) {
-  const d = new Duel(C.length, seed, ids ? { ids } : undefined);
+function simulate(seed, ids, mode) {
+  const d = new Duel(C.length, seed, { ids: ids || undefined, mode });
   let n = 0; while (d.phase !== 'end' && n < 60 * 300) { d.step(1 / 60); n++; }
   if (d.phase !== 'end') return null;
   const L = [d.cfg.lives, d.cfg.lives]; let lead = 0, changes = 0;
@@ -27,8 +27,12 @@ function simulate(seed, ids) {
     L[e.def] = e.lives; const nl = Math.sign(L[0] - L[1]);
     if (nl && nl !== lead) { if (lead) changes++; lead = nl; }
   }
-  return { dur: +(d.endT - d.cfg.intro).toFixed(1), left: d.m[d.winner].lives, changes, ids: d.ids };
+  return { dur: +(d.endT - d.cfg.intro).toFixed(1), left: d.m[d.winner].lives, changes, ids: d.ids, mode };
 }
+// Modi reihum (gemischt), damit jedes Short im Stapel anders aussieht
+const lastMode = (state.posts.slice(-1)[0] || {}).mode;
+const modeOrder = (() => { const a = MODES.slice(); let x = (Date.now() / 1000 | 0) % 997 + 1; for (let i = a.length - 1; i > 0; i--) { x = (x * 48271) % 2147483647; const j = x % (i + 1); [a[i], a[j]] = [a[j], a[i]]; } if (a[0] === lastMode) a.push(a.shift()); return a; })();
+const wantMode = () => modeOrder[out.length % modeOrder.length];
 const good = r => r && r.dur >= 52 && r.dur <= 60 && r.left === 1;
 const out = [], taken = new Set(), usedCountries = new Set();
 let seed = (Date.now() % 1e9) | 0;
@@ -39,10 +43,10 @@ for (const [a, b] of (args.requests || [])) {
   if (!(a in byCode) || !(b in byCode) || a === b) { console.error('unbekannt/ungültig:', a, b); continue; }
   if (blocked.has(key(a, b))) { console.error('gesperrt (Konflikt):', a, b); continue; }
   if (taken.has(key(a, b))) continue;
-  let best = null;
-  for (let k = 0; k < 4000; k++) {
+  let best = null; const mode = wantMode();
+  for (let k = 0; k < 8000; k++) {
     seed++; if (usedSeeds.has(seed)) continue;
-    const r = simulate(seed, [byCode[a], byCode[b]]);
+    const r = simulate(seed, [byCode[a], byCode[b]], mode);
     if (good(r) && (!best || r.changes > best.changes)) best = { seed, ...r };
     if (best && best.changes >= 2) break;
   }
@@ -53,7 +57,7 @@ let tries = 0;
 while (out.length < count && tries < 200000) {
   tries++; seed++;
   if (usedSeeds.has(seed)) continue;
-  const r = simulate(seed);
+  const r = simulate(seed, null, wantMode());
   if (!good(r) || r.changes < 1) continue;
   const codes = r.ids.map(i => C[i].c), k = key(...codes);
   if (blocked.has(k) || recent.has(k) || taken.has(k)) continue;

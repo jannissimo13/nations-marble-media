@@ -7,6 +7,7 @@ from playwright.async_api import async_playwright
 
 SEED = int(sys.argv[1]); OUT = sys.argv[2]; MUSIC = sys.argv[3] if len(sys.argv) > 3 and sys.argv[3] not in ('', '-') else None
 IDS = json.loads(sys.argv[4]) if len(sys.argv) > 4 else None  # z. B. [36, 44]
+MODE = sys.argv[5] if len(sys.argv) > 5 else 'classic'
 FPS, SR = 30, 48000
 import tempfile
 _TD = tempfile.mkdtemp(prefix='duel_')
@@ -22,7 +23,7 @@ async def render_video():
         import os
         page = 'file://' + os.path.join(os.path.dirname(os.path.abspath(__file__)), 'flag-duel.html') + '?render=1'
         await pg.goto(page)
-        await pg.evaluate(f'window.__init({SEED}, {json.dumps(IDS)})')
+        await pg.evaluate(f'window.__init({SEED}, {json.dumps(IDS)}, {json.dumps(MODE)})')
         n = 0
         while True:
             url = await pg.evaluate('window.__frame(0.93)')
