@@ -33,7 +33,7 @@ function simulate(seed, ids, mode) {
 const lastMode = (state.posts.slice(-1)[0] || {}).mode;
 const modeOrder = (() => { const a = MODES.slice(); let x = (Date.now() / 1000 | 0) % 997 + 1; for (let i = a.length - 1; i > 0; i--) { x = (x * 48271) % 2147483647; const j = x % (i + 1); [a[i], a[j]] = [a[j], a[i]]; } if (a[0] === lastMode) a.push(a.shift()); return a; })();
 const wantMode = () => modeOrder[out.length % modeOrder.length];
-const good = r => r && r.dur >= 52 && r.dur <= 60 && r.left === 1;
+const good = r => r && r.dur >= 56 && r.dur <= 62 && r.left === 1;
 const out = [], taken = new Set(), usedCountries = new Set();
 let seed = (Date.now() % 1e9) | 0;
 

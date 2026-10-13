@@ -19,7 +19,26 @@
   const MODE_INFO = { classic: 'CLASSIC ARENA', pinball: 'PINBALL ARENA', shrink: 'SHRINKING ARENA', spinner: 'SPINNER ARENA', storm: 'SPIKE STORM' };
   const MODE_PARAMS = { pegR: 54, pegDist: 200, spinLen: 200, spinTh: 24, spinW: 1.15, shrinkTo: 320, shrinkFrom: 10, shrinkDur: 32 };
 
-  const MODE_LIVES = { classic: 5, pinball: 4, spinner: 4, storm: 8, shrink: 6 };
+  const MODE_LIVES = { classic: 5, pinball: 4, spinner: 4, storm: 10, shrink: 7 };
+
+  // eigene Hypotenuse (nur + * sqrt, exakt IEEE) – Math.hypot liefert in Node und Chromium teils andere letzte Stellen
+  const hyp = (a, b) => Math.sqrt(a * a + b * b);
+
+  // eigene sin/cos (nur + * /), weil Math.sin/cos in Node und Chromium in der letzten Stelle abweichen
+  // und die chaotische Simulation sonst im Video anders endet als bei der Auswahl.
+  const TWO_PI = 6.283185307179586;
+  function sinD(x) {
+    x -= TWO_PI * Math.round(x / TWO_PI);
+    const x2 = x * x; let term = x, sum = x;
+    for (let k = 1; k <= 12; k++) { term *= -x2 / ((2 * k) * (2 * k + 1)); sum += term; }
+    return sum;
+  }
+  function cosD(x) {
+    x -= TWO_PI * Math.round(x / TWO_PI);
+    const x2 = x * x; let term = 1, sum = 1;
+    for (let k = 1; k <= 12; k++) { term *= -x2 / ((2 * k - 1) * (2 * k)); sum += term; }
+    return sum;
+  }
 
   function mulberry(seed) {
     let a = seed >>> 0;
@@ -52,7 +71,7 @@
       return {
         id: this.ids[i],
         x: c.cx + (i === 0 ? -1 : 1) * c.R * 0.45, y: c.cy + (rnd() - 0.5) * 120,
-        vx: Math.cos(ang) * c.speed, vy: Math.sin(ang) * c.speed,
+        vx: cosD(ang) * c.speed, vy: sinD(ang) * c.speed,
         lives: c.lives, spikes: false, shield: false, cd: 0, flash: 0, rot: 0, wob: 0
       };
     });
@@ -64,7 +83,7 @@
     const P = MODE_PARAMS;
     if (this.mode === 'pinball') {
       const a0 = rnd() * Math.PI * 2, n = 3;
-      for (let k = 0; k < n; k++) { const a = a0 + k * Math.PI * 2 / n; this.pegs.push({ x: c.cx + Math.cos(a) * P.pegDist, y: c.cy + Math.sin(a) * P.pegDist, r: P.pegR }); }
+      for (let k = 0; k < n; k++) { const a = a0 + k * Math.PI * 2 / n; this.pegs.push({ x: c.cx + cosD(a) * P.pegDist, y: c.cy + sinD(a) * P.pegDist, r: P.pegR }); }
       this.pegs.push({ x: c.cx, y: c.cy, r: P.pegR * 0.8 });
     }
     if (this.mode === 'spinner') this.spin = { a: rnd() * Math.PI, w: (rnd() < 0.5 ? -1 : 1) * P.spinW, len: P.spinLen, th: P.spinTh };
@@ -81,11 +100,11 @@
     const c = this.cfg, rnd = this.rnd;
     for (let k = 0; k < 40; k++) {
       const ang = rnd() * Math.PI * 2, rad = Math.sqrt(rnd()) * (this.R - c.itemR - 40);
-      const x = c.cx + Math.cos(ang) * rad, y = c.cy + Math.sin(ang) * rad;
-      const free = this.m.every(m => Math.hypot(m.x - x, m.y - y) > c.r + c.itemR + 60) &&
-        this.items.every(it => Math.hypot(it.x - x, it.y - y) > c.itemR * 3) &&
-        this.pegs.every(p => Math.hypot(p.x - x, p.y - y) > p.r + c.itemR + 24) &&
-        (!this.spin || Math.hypot(x - c.cx, y - c.cy) > this.spin.len + c.itemR + 30);
+      const x = c.cx + cosD(ang) * rad, y = c.cy + sinD(ang) * rad;
+      const free = this.m.every(m => hyp(m.x - x, m.y - y) > c.r + c.itemR + 60) &&
+        this.items.every(it => hyp(it.x - x, it.y - y) > c.itemR * 3) &&
+        this.pegs.every(p => hyp(p.x - x, p.y - y) > p.r + c.itemR + 24) &&
+        (!this.spin || hyp(x - c.cx, y - c.cy) > this.spin.len + c.itemR + 30);
       if (free) { this.items.push({ type, x, y, born: this.t }); this.events.push({ t: this.t, type: 'spawn', item: type, x, y }); return; }
     }
     this.next[type] = this.gameT() + 0.5; // später erneut versuchen
@@ -103,7 +122,7 @@
     if (this.mode === 'shrink') {
       const P = MODE_PARAMS, k = Math.min(1, Math.max(0, (gt - P.shrinkFrom) / P.shrinkDur));
       this.R = c.R - (c.R - P.shrinkTo) * k;
-      for (const it of this.items) { const d = Math.hypot(it.x - c.cx, it.y - c.cy), lim = this.R - c.itemR - 20; if (d > lim) { it.x = c.cx + (it.x - c.cx) * lim / d; it.y = c.cy + (it.y - c.cy) * lim / d; } }
+      for (const it of this.items) { const d = hyp(it.x - c.cx, it.y - c.cy), lim = this.R - c.itemR - 20; if (d > lim) { it.x = c.cx + (it.x - c.cx) * lim / d; it.y = c.cy + (it.y - c.cy) * lim / d; } }
     }
     if (this.spin) this.spin.a += this.spin.w * dt;
     for (const type of ['spike', 'shield']) {
@@ -121,13 +140,13 @@
         m.x += m.vx * h; m.y += m.vy * h;
         m.rot += (m.vx > 0 ? 1 : -1) * v * h / c.r * 0.6;
         // Wand
-        const dx = m.x - c.cx, dy = m.y - c.cy, d = Math.hypot(dx, dy);
+        const dx = m.x - c.cx, dy = m.y - c.cy, d = hyp(dx, dy);
         if (d + c.r > this.R) {
           const nx = dx / d, ny = dy / d, dot = m.vx * nx + m.vy * ny;
           if (dot > 0) {
             m.vx -= 2 * dot * nx; m.vy -= 2 * dot * ny;
             // leichte Zufallsabweichung gegen Endlosschleifen
-            const j = (this.rnd() - 0.5) * 0.16, cs = Math.cos(j), sn = Math.sin(j);
+            const j = (this.rnd() - 0.5) * 0.16, cs = cosD(j), sn = sinD(j);
             const vx = m.vx * cs - m.vy * sn, vy = m.vx * sn + m.vy * cs; m.vx = vx; m.vy = vy;
             this.stats.wall++;
             this.events.push({ t: this.t, type: 'wall', who: this.m.indexOf(m), x: c.cx + nx * this.R, y: c.cy + ny * this.R });
@@ -138,7 +157,7 @@
       // Hindernisse (Pinball-Pfosten, Spinner)
       for (const m of this.m) {
         const hitObs = (ox, oy, rad) => {
-          const dx = m.x - ox, dy = m.y - oy, d = Math.hypot(dx, dy) || 1e-6;
+          const dx = m.x - ox, dy = m.y - oy, d = hyp(dx, dy) || 1e-6;
           if (d >= c.r + rad) return;
           const nx = dx / d, ny = dy / d;
           m.x = ox + nx * (c.r + rad); m.y = oy + ny * (c.r + rad);
@@ -147,14 +166,14 @@
         };
         for (const p of this.pegs) hitObs(p.x, p.y, p.r);
         if (this.spin) {
-          const sp = this.spin, ax = c.cx - Math.cos(sp.a) * sp.len, ay = c.cy - Math.sin(sp.a) * sp.len, bx = c.cx + Math.cos(sp.a) * sp.len, by = c.cy + Math.sin(sp.a) * sp.len;
+          const sp = this.spin, ax = c.cx - cosD(sp.a) * sp.len, ay = c.cy - sinD(sp.a) * sp.len, bx = c.cx + cosD(sp.a) * sp.len, by = c.cy + sinD(sp.a) * sp.len;
           const ex = bx - ax, ey = by - ay, tt = Math.max(0, Math.min(1, ((m.x - ax) * ex + (m.y - ay) * ey) / (ex * ex + ey * ey)));
           hitObs(ax + ex * tt, ay + ey * tt, sp.th);
         }
       }
       // Kugel-Kugel
       const [A, B] = this.m;
-      const dx = B.x - A.x, dy = B.y - A.y, d = Math.hypot(dx, dy);
+      const dx = B.x - A.x, dy = B.y - A.y, d = hyp(dx, dy);
       if (d < 2 * c.r && d > 0) {
         const nx = dx / d, ny = dy / d;
         const rel = (A.vx - B.vx) * nx + (A.vy - B.vy) * ny;
@@ -167,7 +186,7 @@
       }
       // Geschwindigkeit konstant halten
       for (const m of this.m) {
-        const sp = Math.hypot(m.vx, m.vy) || 1;
+        const sp = hyp(m.vx, m.vy) || 1;
         // nie zu steil horizontal/vertikal festfahren: minimale Querkomponente
         m.vx = m.vx / sp * v; m.vy = m.vy / sp * v;
       }
@@ -175,7 +194,7 @@
       for (const m of this.m) {
         for (let i = this.items.length - 1; i >= 0; i--) {
           const it = this.items[i];
-          if (Math.hypot(m.x - it.x, m.y - it.y) > c.r + c.itemR * 0.8) continue;
+          if (hyp(m.x - it.x, m.y - it.y) > c.r + c.itemR * 0.8) continue;
           if (it.type === 'spike' && !m.spikes) {
             m.spikes = true; this.items.splice(i, 1);
             this.next.spike = this.gameT() + c.spikeRespawn[0] + this.rnd() * (c.spikeRespawn[1] - c.spikeRespawn[0]);
