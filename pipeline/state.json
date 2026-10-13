@@ -359,6 +359,82 @@
    "music": "Van Life Rager - Everet Almond.mp3",
    "postId": "6acbd2dba9411fbcc5555771",
    "dueAt": "2026-10-16T11:00:00Z"
+  },
+  {
+   "seed": 903736450,
+   "codes": [
+    "at",
+    "jp"
+   ],
+   "names": [
+    "Austria",
+    "Japan"
+   ],
+   "file": "flagduel-903736450-austria-vs-japan.mp4",
+   "status": "scheduled",
+   "requested": false,
+   "winner": "Austria",
+   "music": "Intergalactic - Alex Jones _ Xander Jones.mp3",
+   "mode": "storm",
+   "postId": "6ace4bd31ced551792badcb7",
+   "dueAt": "2026-10-16T19:00:00Z"
+  },
+  {
+   "seed": 903736911,
+   "codes": [
+    "fi",
+    "au"
+   ],
+   "names": [
+    "Finland",
+    "Australia"
+   ],
+   "file": "flagduel-903736911-finland-vs-australia.mp4",
+   "status": "scheduled",
+   "requested": false,
+   "winner": "Australia",
+   "music": "Glitcher - Dyalla.mp3",
+   "mode": "spinner",
+   "postId": "6ace4bd6aae68f5d3ccd2966",
+   "dueAt": "2026-10-17T11:00:00Z"
+  },
+  {
+   "seed": 903737094,
+   "codes": [
+    "no",
+    "de"
+   ],
+   "names": [
+    "Norway",
+    "Germany"
+   ],
+   "file": "flagduel-903737094-norway-vs-germany.mp4",
+   "status": "scheduled",
+   "requested": false,
+   "winner": "Norway",
+   "music": "Club Love - Everet Almond.mp3",
+   "mode": "pinball",
+   "postId": "6ace4bd953128ef284b4cc8f",
+   "dueAt": "2026-10-17T19:00:00Z"
+  },
+  {
+   "seed": 903737223,
+   "codes": [
+    "kr",
+    "bo"
+   ],
+   "names": [
+    "South Korea",
+    "Bolivia"
+   ],
+   "file": "flagduel-903737223-south-korea-vs-bolivia.mp4",
+   "status": "scheduled",
+   "requested": false,
+   "winner": "Bolivia",
+   "music": "The Theme - Alex Jones _ Xander Jones.mp3",
+   "mode": "classic",
+   "postId": "6ace4bdc1ced551792badf6f",
+   "dueAt": "2026-10-18T11:00:00Z"
   }
  ],
  "commented": [
