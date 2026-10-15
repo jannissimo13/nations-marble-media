@@ -340,7 +340,7 @@
    "winner": "Brazil",
    "music": "Disco Dance - Evening Telecast.mp3",
    "postId": "6acbd2d28e8dd50ffc5049c3",
-   "dueAt": "2026-10-15T19:00:00Z"
+   "dueAt": "2026-10-16T11:00:00.000Z"
   },
   {
    "seed": 741180456,
@@ -358,7 +358,7 @@
    "winner": "Senegal",
    "music": "Van Life Rager - Everet Almond.mp3",
    "postId": "6acbd2dba9411fbcc5555771",
-   "dueAt": "2026-10-16T11:00:00Z"
+   "dueAt": "2026-10-16T19:00:00.000Z"
   },
   {
    "seed": 903736450,
@@ -377,7 +377,7 @@
    "music": "Intergalactic - Alex Jones _ Xander Jones.mp3",
    "mode": "storm",
    "postId": "6ace4bd31ced551792badcb7",
-   "dueAt": "2026-10-16T19:00:00Z"
+   "dueAt": "2026-10-17T11:00:00.000Z"
   },
   {
    "seed": 903736911,
@@ -396,7 +396,7 @@
    "music": "Glitcher - Dyalla.mp3",
    "mode": "spinner",
    "postId": "6ace4bd6aae68f5d3ccd2966",
-   "dueAt": "2026-10-17T11:00:00Z"
+   "dueAt": "2026-10-17T19:00:00.000Z"
   },
   {
    "seed": 903737094,
@@ -415,7 +415,7 @@
    "music": "Club Love - Everet Almond.mp3",
    "mode": "pinball",
    "postId": "6ace4bd953128ef284b4cc8f",
-   "dueAt": "2026-10-17T19:00:00Z"
+   "dueAt": "2026-10-18T11:00:00.000Z"
   },
   {
    "seed": 903737223,
@@ -434,7 +434,26 @@
    "music": "The Theme - Alex Jones _ Xander Jones.mp3",
    "mode": "classic",
    "postId": "6ace4bdc1ced551792badf6f",
-   "dueAt": "2026-10-18T11:00:00Z"
+   "dueAt": "2026-10-18T19:00:00.000Z"
+  },
+  {
+   "seed": 770000120,
+   "codes": [
+    "us",
+    "su"
+   ],
+   "names": [
+    "USA",
+    "USSR"
+   ],
+   "file": "flagduel-770000120-usa-vs-ussr.mp4",
+   "postId": "6ad0e1a291a4bd7739724d10",
+   "dueAt": "2026-10-15T19:00:00.000Z",
+   "status": "scheduled",
+   "requested": false,
+   "winner": "USSR",
+   "music": "Lion - Dyalla.mp3",
+   "mode": "classic"
   }
  ],
  "commented": [
