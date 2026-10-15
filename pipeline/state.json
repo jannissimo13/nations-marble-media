@@ -454,6 +454,63 @@
    "winner": "USSR",
    "music": "Lion - Dyalla.mp3",
    "mode": "classic"
+  },
+  {
+   "seed": 87065314,
+   "codes": [
+    "de",
+    "ca"
+   ],
+   "names": [
+    "Germany",
+    "Canada"
+   ],
+   "file": "flagduel-87065314-germany-vs-canada.mp4",
+   "postId": "6ad119080d0594a866c6ec3c",
+   "dueAt": "2026-10-19T11:00:00.000Z",
+   "status": "scheduled",
+   "requested": false,
+   "winner": "Germany",
+   "music": "Cued For Liftoff - Dan _Lebo_ Lebowitz, Tone Seeker.mp3",
+   "mode": "storm"
+  },
+  {
+   "seed": 87065565,
+   "codes": [
+    "pt",
+    "am"
+   ],
+   "names": [
+    "Portugal",
+    "Armenia"
+   ],
+   "file": "flagduel-87065565-portugal-vs-armenia.mp4",
+   "postId": "6ad1190b0d0594a866c6ed00",
+   "dueAt": "2026-10-19T19:00:00.000Z",
+   "status": "scheduled",
+   "requested": false,
+   "winner": "Armenia",
+   "music": "Club Love - Everet Almond.mp3",
+   "mode": "shrink"
+  },
+  {
+   "seed": 87065646,
+   "codes": [
+    "sa",
+    "ec"
+   ],
+   "names": [
+    "Saudi Arabia",
+    "Ecuador"
+   ],
+   "file": "flagduel-87065646-saudi-arabia-vs-ecuador.mp4",
+   "postId": "6ad1190ef06f0ba7167696d5",
+   "dueAt": "2026-10-20T11:00:00.000Z",
+   "status": "scheduled",
+   "requested": false,
+   "winner": "Saudi Arabia",
+   "music": "All In - Everet Almond.mp3",
+   "mode": "pinball"
   }
  ],
  "commented": [
