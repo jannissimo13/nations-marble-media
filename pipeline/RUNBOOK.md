@@ -37,12 +37,12 @@ Er läuft per geplanter Aufgabe am **Sonntag und Donnerstag um 19:59 (Europe/Ber
    Nur wenn der PC erreichbar ist **und** in Schritt 0 die Freigabe erteilt wurde; sonst überspringen und im Bericht erwähnen (das Lesen der Wünsche bleibt davon unberührt). Erledigte Video-IDs in `state.json` unter `commented` merken.
 5. **Konflikt-Check:** Websuche nach aktuellen zwischenstaatlichen Kriegen/Gefechten. `conflicts.json` bei Bedarf ergänzen (mit Grund und Datum).
    Gesperrte Paare werden nie gerendert – weder als Wunsch noch zufällig.
-6. **Musik:** Ordner auf dem PC auflisten und alle MP3s per `device_stage_files` in die Arbeitsumgebung holen.
-   Ist der PC nicht erreichbar: ohne Musik rendern (nur Sound-Effekte) und das im Bericht erwähnen.
+6. **Musik: keine (Entscheidung des Nutzers, 17.10.2026 – Musik wirkte in den Shorts zu goofy).** Keine MP3s vom PC holen; die Shorts werden nur mit Sound-Effekten gerendert.
+   Nur wenn der Nutzer ausdrücklich wieder Musik will: Ordner auf dem PC auflisten und alle MP3s per `device_stage_files` holen.
 7. **Auswählen (mit Arena-Modi):** `pick.js` verteilt reihum 5 Modi (classic, pinball, shrink, spinner, storm) auf den Stapel und gibt `mode` je Duell aus; `batch.py` übernimmt ihn für Video, Titelbeschreibung und `manifest.json`.
     `node pick.js '{"count":<bedarf>,"requests":[["de","fr"], ...],"avoidRecent":40}' > picks.json`
-8. **Rendern:** `python3 batch.py picks.json <musikordner oder ""> ../shorts 2` – Ausgabe muss für jede Datei `ok` zeigen.
-   Stichprobe: ein Frame aus einem Video ansehen (z. B. bei 30 s), Lautheit ≈ −14 LUFS.
+8. **Rendern:** `python3 batch.py picks.json "" ../shorts 2` (leerer Musikordner = ohne Musik) – Ausgabe muss für jede Datei `ok` zeigen.
+   Stichprobe: ein Frame aus einem Video ansehen (z. B. bei 30 s). Die Lautheit ohne Musik ist niedriger als früher; nur prüfen, dass die Effekte hörbar und nicht übersteuert sind.
 9. **Hochladen:** `shorts/*.mp4` und `pipeline/state.json` committen, `git fetch` + pushen. Jeden Raw-Link mit `curl -I` prüfen (HTTP 200).
 10. **Einplanen:** Für jede Zeile in `shorts/manifest.json` (ohne `error`) `create_post`:
     `channelId` siehe oben, `mode: addToQueue`, `schedulingType: automatic`, `text` = Beschreibung,
@@ -50,12 +50,12 @@ Er läuft per geplanter Aufgabe am **Sonntag und Donnerstag um 19:59 (Europe/Ber
     `metadata.youtube: {title, categoryId: "20", madeForKids: false, privacy: "public", notifySubscribers: true, isAiGenerated: false}`.
     Danach Post-ID, `dueAt` und `mode` in `state.json` eintragen (`status: scheduled`) und erneut pushen. `manifest.json` nicht committen.
 11. **Bericht an den Nutzer** (kurz, Deutsch): wie viele Shorts eingeplant, welche Paarungen, ob Wünsche aus Kommentaren dabei waren,
-    ob Musik genutzt wurde, gesperrte Wünsche, Fehler.
+    gesperrte Wünsche, Fehler.
 
 ## Regeln
 - Nie mehr als 10 eingeplante Posts.
 - Keine Paarungen aus `conflicts.json`.
 - Jedes Land höchstens einmal pro Stapel (macht `pick.js`).
-- Keine Musikdateien ins Repo.
+- Keine Musik in den Shorts (Stand 17.10.2026) und keine Musikdateien ins Repo.
 - Beschreibung jedes Shorts: zu den Standard-Hashtags kommen immer die Hashtags der beiden Länder dazu (z. B. Latvia vs Japan → `#latvia #japan`); `batch.py` macht das automatisch, bei manuell gebauten Beschreibungen ebenfalls beachten.
 - Kommentare nur mit Freigabe aus Schritt 0 (pro Lauf, im Chat) schreiben und anpinnen.
