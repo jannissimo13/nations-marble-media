@@ -494,7 +494,7 @@
    "mode": "shrink"
   },
   {
-   "seed": 87065646,
+   "seed": 348300100,
    "codes": [
     "sa",
     "ec"
@@ -503,13 +503,13 @@
     "Saudi Arabia",
     "Ecuador"
    ],
-   "file": "flagduel-87065646-saudi-arabia-vs-ecuador.mp4",
+   "file": "flagduel-348300100-saudi-arabia-vs-ecuador.mp4",
    "postId": "6ad1190ef06f0ba7167696d5",
    "dueAt": "2026-10-20T11:00:00.000Z",
    "status": "scheduled",
    "requested": false,
-   "winner": "Saudi Arabia",
-   "music": "All In - Everet Almond.mp3",
+   "winner": "Ecuador",
+   "music": null,
    "mode": "pinball"
   }
  ],

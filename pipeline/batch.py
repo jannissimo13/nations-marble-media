@@ -25,10 +25,17 @@ MODE_TEXT = {
     'pinball': 'in the PINBALL arena – bumpers everywhere',
     'shrink': 'in the SHRINKING arena – the walls are closing in',
     'spinner': 'in the SPINNER arena – dodge the deadly bar',
+    'web': 'CONNECTIONS – five countries, one web of links',
     'storm': 'in the SPIKE STORM – double the spikes',
 }
 
-def make_title(a, b):
+def make_title(a, b, *more):
+    if more:
+        names = [a, b, *more]
+        for tail in (' – Who wins? #shorts #flags #countries', ' #shorts #flags', ' #shorts'):
+            t = ' vs '.join(names) + tail
+            if len(t) <= 100: return t
+        return f"{len(names)} Countries, 1 Winner – CONNECTIONS #shorts #flags #countries"
     # YouTube zeigt die ersten 3 Hashtags über dem Titel; Titel max. 100 Zeichen
     for tail in (' – Who wins? #shorts #flags #countries', ' – Who wins? #shorts #flags', ' #shorts #flags', ' #shorts'):
         t = f"{a} vs {b}{tail}"
@@ -36,8 +43,9 @@ def make_title(a, b):
     return f"{a} vs {b}"[:100]
 
 def job(p):
-    a, b = p['names']
-    fname = f"flagduel-{p['seed']}-{slug(a)}-vs-{slug(b)}.mp4"
+    a, b = p['names'][:2]
+    web = p.get('mode') == 'web'
+    fname = f"flagduel-{p['seed']}-{'-vs-'.join(slug(n) for n in p['names'])}.mp4"
     music = os.path.join(music_dir, order[picks.index(p) % len(order)]) if tracks else '-'
     r = subprocess.run(['python3', os.path.join(HERE, 'render.py'), str(p['seed']), os.path.join(out_dir, fname), music, json.dumps(p['ids']), p.get('mode') or 'classic'],
                        capture_output=True, text=True)
@@ -46,12 +54,12 @@ def job(p):
     res = json.loads(r.stdout.strip().splitlines()[-1])
     req = ' Requested in the comments!' if p.get('requested') else ''
     return {**p, 'file': fname, 'music': os.path.basename(music) if tracks else None, 'seconds': res['seconds'], 'winner': res['winner'],
-            'title': make_title(a, b),
+            'title': make_title(*p['names']) if web else make_title(a, b),
             'mode': p.get('mode') or 'classic',
-            'text': (f"{a} vs {b} {MODE_TEXT.get(p.get('mode') or 'classic', 'in the arena')}!{req} Spikes hit, shields block – last country standing wins. "
+            'text': (f"{' vs '.join(p['names']) if web else a + ' vs ' + b} {MODE_TEXT.get(p.get('mode') or 'classic', 'in the arena')}!{req} {'Cut the links, keep yours – last country standing wins. ' if web else 'Spikes hit, shields block – last country standing wins. '}"
                      f"Which duel should be next? Comment: COUNTRY vs COUNTRY\n\n"
                      f"#shorts #flags #countries #geography #worldflags #battle #simulation #satisfying #nationsmarble "
-                     f"{country_tag(a)} {country_tag(b)}")}
+                     f"{' '.join(country_tag(n) for n in p['names'])}")}
 
 with ThreadPoolExecutor(par) as ex:
     results = list(ex.map(job, picks))

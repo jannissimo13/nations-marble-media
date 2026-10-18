@@ -3,7 +3,7 @@
 // Ausgabe: JSON-Liste [{seed, ids, codes, names, dur, left, changes, requested}]
 require('./sim.js');
 const fs = require('fs');
-const { Duel, MODES } = globalThis.FlagDuel;
+const { Duel, Web, MODES } = globalThis.FlagDuel;
 const C = JSON.parse(fs.readFileSync(__dirname + '/countries.json', 'utf8'));
 const byCode = Object.fromEntries(C.map(x => [x.c, x.i]));
 const conf = JSON.parse(fs.readFileSync(__dirname + '/conflicts.json', 'utf8'));
@@ -37,6 +37,27 @@ const good = r => r && r.dur >= 56 && r.dur <= 62 && r.left === 1;
 const out = [], taken = new Set(), usedCountries = new Set();
 let seed = (Date.now() % 1e9) | 0;
 
+
+// Connections (5 Länder): jedes 4. Video im Stapel
+function webPick() {
+  const pool = [...BIG].filter(c => c in byCode && !usedCountries.has(c));
+  for (let t = 0; t < 400; t++) {
+    const codes = []; const p = pool.slice();
+    while (codes.length < 5 && p.length) codes.push(p.splice(Math.floor(Math.random() * p.length), 1)[0]);
+    if (codes.length < 5) return null;
+    if (codes.some((a, i) => codes.some((b, j) => j > i && blocked.has(key(a, b))))) continue;
+    const ids = codes.map(c => byCode[c]);
+    for (let k = 0; k < 40; k++) {
+      seed++; if (usedSeeds.has(seed)) continue;
+      const d = new Web(C.length, seed, { ids });
+      let n = 0; while (d.phase !== 'end' && n < 60 * 200) { d.step(1 / 60); n++; }
+      if (d.phase !== 'end') continue;
+      const dur = +(d.endT - d.cfg.intro).toFixed(1);
+      if (dur >= 60 && dur <= 65 && d.m[d.winner].lives >= 1) return { seed, dur, left: d.m[d.winner].lives, changes: 0, ids: d.ids, mode: 'web', requested: false };
+    }
+  }
+  return null;
+}
 // 1) Wunsch-Duelle aus den Kommentaren
 for (const [a, b] of (args.requests || [])) {
   if (out.length >= count) break;
@@ -55,7 +76,12 @@ for (const [a, b] of (args.requests || [])) {
 // 2) Zufallsduelle
 let tries = 0;
 while (out.length < count && tries < 200000) {
-  tries++; seed++;
+  tries++;
+  if ((state.posts.length + out.length + 1) % 4 === 0) {
+    const w = webPick();
+    if (w) { out.push(w); w.ids.forEach(i => usedCountries.add(C[i].c)); continue; }
+  }
+  seed++;
   if (usedSeeds.has(seed)) continue;
   const r = simulate(seed, null, wantMode());
   if (!good(r) || r.changes < 1) continue;

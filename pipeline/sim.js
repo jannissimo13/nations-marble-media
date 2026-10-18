@@ -271,7 +271,7 @@
 
 
   /* ---------- Connections-Modus (mehrere Länder, Fäden zur Wand) ---------- */
-  const WEB = { n: 5, lives: 5, speed: 480, initTethers: 3, maxTethers: 12, respawnDelay: 3.5, minLen: 60, cutWindow: 99, bounceFan: 3, overtimeAt: 52, spread: 0.85 };
+  const WEB = { n: 5, lives: 5, speed: 420, initTethers: 3, maxTethers: 8, respawnDelay: 3.5, minLen: 60, cutWindow: 99, bounceFan: 1, overtimeAt: 52, spread: 0.85 };
   const WEB_COLORS = 4;
 
   function Web(nCountries, seed, opts) {
