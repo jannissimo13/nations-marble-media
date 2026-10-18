@@ -335,7 +335,7 @@
     "Brazil"
    ],
    "file": "flagduel-741180216-north-macedonia-vs-brazil.mp4",
-   "status": "scheduled",
+   "status": "sent",
    "requested": false,
    "winner": "Brazil",
    "music": "Disco Dance - Evening Telecast.mp3",
@@ -353,7 +353,7 @@
     "Senegal"
    ],
    "file": "flagduel-741180456-spain-vs-senegal.mp4",
-   "status": "scheduled",
+   "status": "sent",
    "requested": false,
    "winner": "Senegal",
    "music": "Van Life Rager - Everet Almond.mp3",
@@ -371,7 +371,7 @@
     "Japan"
    ],
    "file": "flagduel-903736450-austria-vs-japan.mp4",
-   "status": "scheduled",
+   "status": "sent",
    "requested": false,
    "winner": "Austria",
    "music": "Intergalactic - Alex Jones _ Xander Jones.mp3",
@@ -390,7 +390,7 @@
     "Australia"
    ],
    "file": "flagduel-903736911-finland-vs-australia.mp4",
-   "status": "scheduled",
+   "status": "sent",
    "requested": false,
    "winner": "Australia",
    "music": "Glitcher - Dyalla.mp3",
@@ -409,7 +409,7 @@
     "Germany"
    ],
    "file": "flagduel-903737094-norway-vs-germany.mp4",
-   "status": "scheduled",
+   "status": "sent",
    "requested": false,
    "winner": "Norway",
    "music": "Club Love - Everet Almond.mp3",
@@ -449,7 +449,7 @@
    "file": "flagduel-770000120-usa-vs-ussr.mp4",
    "postId": "6ad0e1a291a4bd7739724d10",
    "dueAt": "2026-10-15T19:00:00.000Z",
-   "status": "scheduled",
+   "status": "sent",
    "requested": false,
    "winner": "USSR",
    "music": "Lion - Dyalla.mp3",
