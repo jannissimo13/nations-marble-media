@@ -70,6 +70,8 @@ def s_block():
     n = int(0.6 * SR)
     x = 0.4 * (noise(n) - lowpass(noise(n), 4)) * env(n, 0.001, 0.12)
     return x + sum(sine(f, n) * env(n, 0.002, 0.25) for f in (1870, 2490, 3320)) * 0.08
+def s_cut():
+    n = int(0.16 * SR); return 0.35 * sine(2600, n, 700) * env(n, 0.001, 0.045) + 0.18 * (noise(n) - lowpass(noise(n), 3)) * env(n, 0.001, 0.03)
 def s_go():
     n = int(0.9 * SR)
     whoosh = lowpass(noise(n), 30) * np.sin(np.linspace(0, np.pi, n)) ** 2 * 0.35
@@ -88,19 +90,23 @@ def s_fanfare():
     return out
 
 SFX = {'wall': s_wall(), 'bump': s_bump(), 'pick_spike': s_pick_spike(), 'pick_shield': s_pick_shield(), 'hit': s_hit(),
-       'block': s_block(), 'go': s_go(), 'overtime': s_overtime(), 'ko': s_ko(), 'fanfare': s_fanfare()}
+       'block': s_block(), 'cut': s_cut(), 'go': s_go(), 'overtime': s_overtime(), 'ko': s_ko(), 'fanfare': s_fanfare()}
 
 
 def mix_sfx(events, total):
     buf = np.zeros(int(total * SR) + SR * 3)
     def put(name, t, g=1.0):
         s = SFX[name]; i = int(t * SR); buf[i:i + len(s)] += g * s
-    last_wall = -1
+    last_wall = -1; last_cut = -1
     for e in events:
         k = e['type']
         if k == 'wall':
             if e['t'] - last_wall > 0.05: put('wall', e['t'], 0.8); last_wall = e['t']
         elif k == 'pickup': put('pick_spike' if e['item'] == 'spike' else 'pick_shield', e['t'])
+        elif k == 'cut':
+            if e['t'] - last_cut > 0.07: put('cut', e['t'], 0.6); last_cut = e['t']
+        elif k == 'rewire': put('pick_shield', e['t'], 0.7)
+        elif k == 'out': put('ko', e['t'], 0.55)
         elif k in ('bump', 'hit', 'block', 'go', 'overtime'): put(k, e['t'])
         elif k == 'ko': put('ko', e['t']); put('fanfare', e['t'] + 0.95, 1.0)
     buf = buf[:int(total * SR)]
