@@ -511,6 +511,126 @@
    "winner": "Ecuador",
    "music": null,
    "mode": "pinball"
+  },
+  {
+   "seed": 348732035,
+   "codes": [
+    "eg",
+    "no"
+   ],
+   "names": [
+    "Egypt",
+    "Norway"
+   ],
+   "file": "flagduel-348732035-egypt-vs-norway.mp4",
+   "postId": "6ad51be4a48c8f8371af6cc5",
+   "dueAt": "2026-10-20T19:00:00.000Z",
+   "status": "scheduled",
+   "requested": false,
+   "winner": "Norway",
+   "music": null,
+   "mode": "storm"
+  },
+  {
+   "seed": 348732456,
+   "codes": [
+    "ar",
+    "bo"
+   ],
+   "names": [
+    "Argentina",
+    "Bolivia"
+   ],
+   "file": "flagduel-348732456-argentina-vs-bolivia.mp4",
+   "postId": "6ad51be70a208cb3237b4e1d",
+   "dueAt": "2026-10-21T11:00:00.000Z",
+   "status": "scheduled",
+   "requested": false,
+   "winner": "Argentina",
+   "music": null,
+   "mode": "spinner"
+  },
+  {
+   "seed": 348732457,
+   "codes": [
+    "gb",
+    "ma",
+    "pt",
+    "nl",
+    "de"
+   ],
+   "names": [
+    "United Kingdom",
+    "Morocco",
+    "Portugal",
+    "Netherlands",
+    "Germany"
+   ],
+   "file": "flagduel-348732457-united-kingdom-vs-morocco-vs-portugal-vs-netherlands-vs-germany.mp4",
+   "postId": "6ad51bf0769b457934d7f7e4",
+   "dueAt": "2026-10-21T19:00:00.000Z",
+   "status": "scheduled",
+   "requested": false,
+   "winner": "Morocco",
+   "music": null,
+   "mode": "web"
+  },
+  {
+   "seed": 348732504,
+   "codes": [
+    "ch",
+    "vn"
+   ],
+   "names": [
+    "Switzerland",
+    "Vietnam"
+   ],
+   "file": "flagduel-348732504-switzerland-vs-vietnam.mp4",
+   "postId": "6ad51bf3769b457934d7f8a5",
+   "dueAt": "2026-10-22T11:00:00.000Z",
+   "status": "scheduled",
+   "requested": false,
+   "winner": "Vietnam",
+   "music": null,
+   "mode": "pinball"
+  },
+  {
+   "seed": 348732582,
+   "codes": [
+    "mt",
+    "kr"
+   ],
+   "names": [
+    "Malta",
+    "South Korea"
+   ],
+   "file": "flagduel-348732582-malta-vs-south-korea.mp4",
+   "postId": "6ad51bf60a208cb3237b50ad",
+   "dueAt": "2026-10-22T19:00:00.000Z",
+   "status": "scheduled",
+   "requested": false,
+   "winner": "South Korea",
+   "music": null,
+   "mode": "storm"
+  },
+  {
+   "seed": 349894053,
+   "codes": [
+    "it",
+    "id"
+   ],
+   "names": [
+    "Italy",
+    "Indonesia"
+   ],
+   "file": "flagduel-349894053-italy-vs-indonesia.mp4",
+   "postId": "6ad51bf8a48c8f8371af6fd9",
+   "dueAt": "2026-10-23T11:00:00.000Z",
+   "status": "scheduled",
+   "requested": false,
+   "winner": "Italy",
+   "music": null,
+   "mode": "spinner"
   }
  ],
  "commented": [
